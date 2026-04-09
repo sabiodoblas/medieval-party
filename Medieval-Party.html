@@ -514,9 +514,10 @@
         <div class="category">Preu Just</div>
         <div class="category">Cultura</div>
         <div class="category">El Futur</div>
-        <div class="category">El detall</div>
+        <div class="category">El Detall</div>
         <div class="category">Random</div>
         <div class="category">Els Protagonistes</div>
+        <div class="category">La foto</div>
     </div>
 
     <div id="questionModal" class="modal" style="display: none;">
@@ -556,15 +557,16 @@
 
     <script>
         const categories = [
-            "PREU JUST",
-            "Speaking",
-            "Comprehension",
-            "Surprise!",
-            "Grammar"
+            "Preu just",
+            "Cultura",
+            "El futur",
+            "Sorpresa",
+            "Random",
+            "La foto"
         ];
 
         const questions = {
-            "PREU JUST": {
+            "Preu just": {
                 100: {
                     q: "What word means 'to get something by paying money'?",
                     choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
@@ -596,7 +598,7 @@
                     correct: 0
                 }
             },
-            "Speaking": {
+            "Cultura": {
                 100: {
                     type: "speaking",
                     q: "SPEAKING CHALLENGE (30 seconds)\n\nDescribe your favorite store.\n\nUse: I like..., They sell..., The prices are...",
@@ -633,7 +635,7 @@
                     hint: "Use: I think... is better because... / Both have advantages, but..."
                 }
             },
-            "Comprehension": {
+            "El futur": {
                 100: {
                     type: "comprehension",
                     passage: "Shopping can be fun and easy. Many people like to buy clothes, food, and gifts. Some people prefer to go to big stores, while others like to shop online. It is important to check the price before buying.",
@@ -685,7 +687,7 @@
                     correct: 1
                 }
             },
-            "Surprise!": {
+            "Sorpresa": {
                 100: {
                     type: "surprise",
                     q: "UNSCRAMBLE THE WORD\n\nThese letters spell something you use to pay:\n\nT E L L A W",
@@ -722,7 +724,50 @@
                     hint: "It's about looking at things in stores..."
                 }
             },
-            "Grammar": {
+            "Random": {
+                100: {
+                    q: "Choose the correct comparative:\n\n'An elephant is _____ than a mouse.'",
+                    choices: [
+                        "A) big",
+                        "B) bigger",
+                        "C) more big",
+                        "D) biger"
+                    ],
+                    correct: 1
+                },
+                200: {
+                    q: "Complete the sentence:\n\n'This jacket is _____ than that one.'",
+                    choices: ["A) more expensive", "B) expensiver", "C) most expensive", "D) expensive"],
+                    correct: 0
+                },
+                300: {
+                    q: "Which sentence uses the comparative correctly?",
+                    choices: [
+                        "A) My phone is more cheap than yours.",
+                        "B) My phone is cheaper than yours.",
+                        "C) My phone is cheapper than yours.",
+                        "D) My phone is most cheap than yours."
+                    ],
+                    correct: 1
+                },
+                400: {
+                    q: "Choose the correct sentence:\n\n'Her English is _____ than mine.'",
+                    choices: ["A) gooder", "B) more good", "C) better", "D) goodest"],
+                    correct: 2
+                },
+                500: {
+                    q: "Find the ERROR in this sentence:\n\n'Online shopping is more easy than going to stores.'",
+                    choices: [
+                        "A) 'Online' should be 'On-line'",
+                        "B) 'more easy' should be 'easier'",
+                        "C) 'going' should be 'go'",
+                        "D) There are no errors"
+                    ],
+                    correct: 1
+                }
+            }
+
+            "La foto": {
                 100: {
                     q: "Choose the correct comparative:\n\n'An elephant is _____ than a mouse.'",
                     choices: [
