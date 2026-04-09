@@ -652,40 +652,35 @@
                 }
             },
             "Surprise!": {
-                100: {
-                    type: "surprise",
-                    q: "UNSCRAMBLE THE WORD\n\nThese letters spell something you use to pay:\n\nT E L L A W",
-                    inputType: "text",
-                    correct: "wallet"
+                 100: {
+                    q: "What word means 'to get something by paying money'?",
+                    choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
+                    correct: 1
                 },
                 200: {
-                    type: "surprise",
-                    q: "TRUE OR FALSE\n\nA 'cashier' is a person who handles payments in a store.",
-                    choices: ["A) TRUE", "B) FALSE"],
-                    correct: 0
+                    q: "If something is 'expensive', what does that mean?",
+                    choices: ["A) It costs little money", "B) It is free", "C) It costs a lot of money", "D) It is broken"],
+                    correct: 2
                 },
                 300: {
-                    type: "surprise",
-                    q: "IDIOM CHALLENGE\n\nWhat does 'cost an arm and a leg' mean?\n\nType your answer:",
-                    inputType: "text",
-                    correct: "very expensive",
-                    acceptVariations: true,
-                    hint: "Think about the word 'cost'..."
+                    q: "What is a 'receipt'?",
+                    choices: ["A) A type of money", "B) A paper that shows what you bought", "C) A special sale", "D) A shopping cart"],
+                    correct: 1
                 },
                 400: {
-                    type: "surprise",
-                    q: "SHOPPING WORDS CHALLENGE\n\nName 5 things you can buy at a store in 20 seconds!\n\n(Teacher checks the answer)",
-                    hasTimer: true,
-                    timerSeconds: 20,
-                    type: "speaking"
+                    q: "What is the difference between 'cheap' and 'expensive'?\n\nCheap = costs little money\nExpensive = costs a lot of money",
+                    choices: ["A) They mean exactly the same thing", "B) 'Cheap' means bad quality", "C) 'Cheap' costs little, 'expensive' costs a lot", "D) Only 'expensive' things can be returned"],
+                    correct: 2
                 },
                 500: {
-                    type: "surprise",
-                    q: "IDIOM CHALLENGE\n\nWhat does 'window shopping' mean?\n\nExample: 'We spent the afternoon window shopping at the mall.'\n\nType your answer:",
-                    inputType: "text",
-                    correct: "looking without buying",
-                    acceptVariations: true,
-                    hint: "It's about looking at things in stores..."
+                    q: "What does 'refund' mean?",
+                    choices: [
+                        "A) Money returned when you return an item",
+                        "B) A type of credit card",
+                        "C) A store worker",
+                        "D) A shopping bag"
+                    ],
+                    correct: 0
                 }
             },
             
