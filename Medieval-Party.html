@@ -376,8 +376,47 @@
     </div>
 
     <script>
-        const defaultCategories = ["Història", "Alquímia", "Geografia", "Justes", "Llegendes"];
+        const defaultCategories = ["Història", "Alquímia", "Geografia", "Cavallers", "Llegendes"];
         const pointValues = [100, 200, 300, 400, 500];
+        
+        // Base de dades predefinida amb les 25 preguntes i respostes
+        const presetQuestions = [
+            // Columna 0: Història
+            { q: "Quin era el sistema polític i social dominant a l'Europa de l'Edat Mitjana?", opts: ["Capitalisme", "Feudalisme", "Comunisme", "Imperialisme"], corr: 1 },
+            { q: "Quin famós explorador víking es creu que va ser el primer europeu a trepitjar Amèrica del Nord (Vinland)?", opts: ["Ragnar Lothbrok", "Erik el Roig", "Leif Erikson", "Harald Hardrada"], corr: 2 },
+            { q: "Quin cèlebre rei de la Corona d'Aragó va conquerir Mallorca i València?", opts: ["Jaume I el Conqueridor", "Pere el Gran", "Alfons el Magnànim", "Ferran el Catòlic"], corr: 0 },
+            { q: "Quina famosa i poderosa orde militar religiosa va ser dissolta tràgicament l'any 1312 pel Papa Climent V i el rei de França?", opts: ["Els Hospitalers", "Els Cavallers Templers", "L'Orde Teutònic", "L'Orde de Calatrava"], corr: 1 },
+            { q: "Quin esdeveniment històric va marcar la fi de l'Edat Mitjana l'any 1453?", opts: ["El Descobriment d'Amèrica", "La Pesta Negra", "La caiguda de Constantinoble", "La Guerra dels Cent Anys"], corr: 2 },
+            
+            // Columna 1: Alquímia i Màgia
+            { q: "Quin metall vulgar intentaven transformar en or els alquimistes desesperadament?", opts: ["Coure", "Plom", "Ferro", "Estany"], corr: 1 },
+            { q: "A l'univers de Harry Potter, qui va ser el creador de la Pedra Filosofal?", opts: ["Albus Dumbledore", "Nicolas Flamel", "Severus Snape", "Merlí"], corr: 1 },
+            { q: "Quina mítica substància es creia que atorgava la vida eterna i guaria totes les malalties?", opts: ["El Sant Greal", "L'Aigua de l'Oblit", "La Sang de Drac", "La Pedra Filosofal"], corr: 3 },
+            { q: "Quina paraula d'origen àrab utilitzaven els alquimistes per referir-se a 'l'esperit' destil·lat del vi?", opts: ["Elixir", "Alcohol", "Èter", "Mercuri"], corr: 1 },
+            { q: "Quin alquimista i astròleg francès del segle XVI és famós per les seves suposades profecies sobre la fi del món?", opts: ["Paracels", "Corneli Agripa", "Nostradamus", "Albert Magne"], corr: 2 },
+            
+            // Columna 2: Geografia
+            { q: "Quina gran muralla es va construir a l'Àsia per protegir-se de les invasions dels nòmades muntats a cavall?", opts: ["La Muralla de Ferro", "El Mur de Gel", "La Gran Muralla Xinesa", "El Mur d'Adrià"], corr: 2 },
+            { q: "A la saga 'El Senyor dels Anells', com es diu la fosca regió volcànica on governa Sàuron?", opts: ["Ròhan", "Mordor", "Góndor", "Ísengard"], corr: 1 },
+            { q: "Quina famosa ruta comercial connectava Europa amb l'Extrem Orient durant l'Edat Mitjana?", opts: ["La Ruta de la Seda", "La Ruta de les Espècies", "La Ruta de la Sal", "La Ruta de l'Or"], corr: 0 },
+            { q: "Si viatgéssim a la llegendària i perduda ciutat de l'Atlàntida, on se suposa que estava ubicada?", opts: ["Al mar Mediterrani", "A l'Oceà Índic", "Més enllà de les Columnes d'Hèrcules", "Al mar Bàltic"], corr: 2 },
+            { q: "A l'Edat Mitjana es creia en un regne mític governat per un rei cristià ric a l'Àsia o l'Àfrica. Com es deia?", opts: ["El Regne d'Avalon", "L'Imperi de la Llum", "El Regne del Preste Joan", "El País de Xangri-La"], corr: 2 },
+            
+            // Columna 3: Cavallers
+            { q: "Quina arma llarga de fusta utilitzaven els cavallers quan s'enfrontaven a cavall en els tornejos?", opts: ["Espasa", "Alabarda", "Massa", "Llança"], corr: 3 },
+            { q: "A 'Joc de Trons', quin temible i gegantí cavaller és conegut amb el sobrenom de 'La Muntanya que Cavalca'?", opts: ["Sandor Clegane", "Gregor Clegane", "Jaime Lannister", "Barristan Selmy"], corr: 1 },
+            { q: "Què llançava tradicionalment un noble a terra per desafiar a un duel a mort un altre cavaller?", opts: ["L'escut", "El guant", "L'espasa", "El casc"], corr: 1 },
+            { q: "En un torneig medieval real, què significava si un combat es duia a terme 'a ultrança'?", opts: ["Sense armadura", "A primera sang", "Amb armes de guerra mortals", "Combatent cecs"], corr: 2 },
+            { q: "Com es deia el codi de conducta ètic i moral que els cavallers juraven seguir?", opts: ["La Llei de l'Espasa", "La Cavalleria (Codi)", "El Pacte de Sang", "La Regla dels Templers"], corr: 1 },
+            
+            // Columna 4: Llegendes
+            { q: "Quina criatura escopia foc i guardava grans tresors a les seves coves?", opts: ["Unicori", "Drac", "Gàrgola", "Mantícora"], corr: 1 },
+            { q: "Segons la mitologia nòrdica, quin és el nom del llop gegantí destinat a devorar Odin al Ragnarök?", opts: ["Jörmungandr", "Fenrir", "Cèrber", "Sköll"], corr: 1 },
+            { q: "Com es deia la llegendària espasa màgica del Rei Artús, que li va atorgar la Dama del Llac?", opts: ["Tizona", "Durandal", "Excalibur", "Joiosa"], corr: 2 },
+            { q: "Quina criatura llegendària amb cos de lleó i cap i ales d'àliga era famosa a l'heràldica medieval?", opts: ["La Mantícora", "La Quimera", "L'Hipogrif", "El Griu (Aixeta)"], corr: 3 },
+            { q: "Quin monstre eslau, que xuclava sang i no podia suportar la llum del sol, va inspirar la llegenda dels vampirs?", opts: ["El Gòlem", "El Wendigo", "L'Strigoi / Upir", "El Banshee"], corr: 2 }
+        ];
+
         let gameData = [];
         let players = [];
         let currentPlayer = 0;
@@ -405,20 +444,24 @@
 
         function generateDefaultData() {
             gameData = [];
+            let qIndex = 0;
             for (let col = 0; col < 5; col++) {
                 for (let row = 0; row < 5; row++) {
+                    const data = presetQuestions[qIndex];
                     gameData.push({
                         id: `${col}-${row}`,
                         col: col,
                         row: row,
                         category: defaultCategories[col],
                         points: pointValues[row],
+                        // Imatge d'un castell èpic per defecte
                         image: 'https://images.unsplash.com/photo-1542382103-6058eb7db6b3?w=500&q=80',
-                        question: `Enigma de ${defaultCategories[col]} per ${pointValues[row]} monedes d'or.`,
-                        options: ["Resposta A", "Resposta B", "Resposta C", "Resposta D"],
-                        correctIndex: 0,
+                        question: data.q,
+                        options: data.opts,
+                        correctIndex: data.corr,
                         answered: false
                     });
+                    qIndex++;
                 }
             }
             saveData();
