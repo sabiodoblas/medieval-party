@@ -21,15 +21,17 @@
             text-align: center;
         }
 
-        h1 { color: var(--jeopardy-yellow); }
+        h1 { color: var(--jeopardy-yellow); font-size: 40px; }
 
         /* Setup Screen */
-        #setup-screen { margin-top: 50px; }
+        #setup-screen { margin-top: 30px; }
         .setup-box {
             background-color: #222;
             padding: 30px;
             border-radius: 10px;
             display: inline-block;
+            max-width: 600px;
+            width: 100%;
         }
         select, button, input {
             padding: 10px;
@@ -43,10 +45,24 @@
             background-color: var(--jeopardy-yellow);
             color: var(--bg-dark);
             font-weight: bold;
+            transition: transform 0.1s;
         }
+        button:active { transform: scale(0.95); }
         button:hover { background-color: #e6b800; }
-        .admin-btn { background-color: #e74c3c; color: white; }
-        .admin-btn:hover { background-color: #c0392b; }
+        
+        .admin-btn { background-color: #3498db; color: white; }
+        .admin-btn:hover { background-color: #2980b9; }
+        .export-btn { background-color: #27ae60; color: white; }
+        .export-btn:hover { background-color: #2ecc71; }
+        .import-btn { background-color: #f39c12; color: white; }
+        .import-btn:hover { background-color: #f1c40f; }
+
+        #team-inputs {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
         /* Game Board */
         #game-screen { display: none; }
@@ -84,12 +100,12 @@
             border-color: #444;
         }
 
-        /* Scoreboard */
+        /* Scoreboard (Arriba) */
         .scoreboard {
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 20px;
+            margin-bottom: 20px;
         }
         .player-score {
             background-color: #222;
@@ -105,7 +121,7 @@
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.9);
+            background-color: rgba(0,0,0,0.95);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -114,13 +130,13 @@
             background-color: var(--jeopardy-blue);
             padding: 30px;
             border-radius: 10px;
-            max-width: 600px;
+            max-width: 700px;
             width: 90%;
             border: 3px solid var(--jeopardy-yellow);
         }
         .modal-content img {
             max-width: 100%;
-            height: 200px;
+            height: 250px;
             object-fit: cover;
             border-radius: 5px;
             margin-bottom: 15px;
@@ -135,15 +151,36 @@
             background-color: #fff;
             color: #000;
             padding: 15px;
-            font-size: 16px;
+            font-size: 18px;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .option-btn:hover { background-color: #ddd; }
+        .option-btn:hover:not(:disabled) { background-color: #ddd; }
+        .option-btn:disabled { cursor: not-allowed; }
+
+        /* Colores de Feedback */
+        .option-btn.correct {
+            background-color: #2ecc71 !important; 
+            color: white !important;
+            border: 2px solid white;
+        }
+        .option-btn.incorrect {
+            background-color: #e74c3c !important; 
+            color: white !important;
+            border: 2px solid white;
+        }
+
+        #feedback-message {
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
 
         /* Admin Form */
         .admin-form { text-align: left; max-height: 80vh; overflow-y: auto; }
         .admin-form label { display: block; margin-top: 10px; font-weight: bold; }
         .admin-form input, .admin-form select { width: 90%; margin-top: 5px; }
-        .close-btn { background-color: #ccc; }
+        .close-btn { background-color: #e74c3c; color: white; }
     </style>
 </head>
 <body>
@@ -151,22 +188,39 @@
     <div id="setup-screen">
         <h1>JEOPARDY</h1>
         <div class="setup-box">
-            <label for="player-count">Número de Jugadores:</label><br>
-            <select id="player-count">
-                <option value="1">1 Jugador</option>
-                <option value="2">2 Jugadores</option>
-                <option value="3">3 Jugadores</option>
+            <label for="player-count">Número de Equipos:</label><br>
+            <select id="player-count" onchange="updateTeamInputs()">
+                <option value="1">1 Equipo</option>
+                <option value="2">2 Equipos</option>
+                <option value="3">3 Equipos</option>
             </select><br>
-            <button onclick="startGame()">¡Jugar!</button>
+
+            <div id="team-inputs">
+                <input type="text" id="team-1" placeholder="Nombre del Equipo 1" value="Equipo 1">
+                <input type="text" id="team-2" placeholder="Nombre del Equipo 2" value="Equipo 2" style="display:none;">
+                <input type="text" id="team-3" placeholder="Nombre del Equipo 3" value="Equipo 3" style="display:none;">
+            </div>
+
+            <button onclick="startGame()" style="margin-top: 20px; font-size: 20px; padding: 10px 30px;">¡Empezar a Jugar!</button>
+            
             <br><br><hr style="border-color: #444;"><br>
-            <button class="admin-btn" onclick="openAdmin()">Editar Preguntas (Admin)</button>
+            
+            <button class="admin-btn" onclick="openAdmin()">⚙️ Editar Preguntas (Admin)</button>
+            <div style="margin-top: 10px;">
+                <button class="export-btn" onclick="exportData()">💾 Descargar Preguntas</button>
+                <button class="import-btn" onclick="document.getElementById('import-file').click()">📂 Cargar Archivo</button>
+                <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importData(event)">
+            </div>
+            <p style="font-size: 12px; color: #aaa; margin-top: 10px;">Guarda tus preguntas descargando el archivo y cárgalo en tu próxima partida.</p>
         </div>
     </div>
 
     <div id="game-screen">
-        <h2 id="turn-indicator" style="color: var(--jeopardy-yellow);"></h2>
-        <div class="board" id="board"></div>
         <div class="scoreboard" id="scoreboard"></div>
+        <h2 id="turn-indicator" style="color: var(--jeopardy-yellow); margin-bottom: 20px;"></h2>
+        
+        <div class="board" id="board"></div>
+        
         <button style="margin-top: 30px;" onclick="location.reload()">Volver al Inicio</button>
     </div>
 
@@ -175,17 +229,18 @@
             <img id="q-image" src="" alt="Imagen de pregunta" onerror="this.style.display='none'">
             <h2 id="q-text">Pregunta...</h2>
             <div class="options-grid" id="q-options"></div>
+            <div id="feedback-message"></div>
         </div>
     </div>
 
     <div id="admin-modal" class="modal">
         <div class="modal-content admin-form">
-            <h2 style="text-align: center; margin-top: 0;">Panel de Administración</h2>
+            <h2 style="text-align: center; margin-top: 0; color: white;">Panel de Administración</h2>
             
             <label>Selecciona la pregunta a editar:</label>
             <select id="edit-selector" onchange="loadQuestionForEdit()"></select>
 
-            <label>Categoría (Solo cambiar en la fila de 100 pts afectará el título):</label>
+            <label>Categoría (Cambiar en la de 100 pts afectará a toda la columna):</label>
             <input type="text" id="edit-category">
 
             <label>URL de la Imagen (Opcional):</label>
@@ -213,13 +268,12 @@
 
             <div style="text-align: center; margin-top: 20px;">
                 <button onclick="saveQuestionEdit()">Guardar Cambios</button>
-                <button class="close-btn" onclick="closeAdmin()">Cerrar</button>
+                <button class="close-btn" onclick="closeAdmin()">Cerrar Panel</button>
             </div>
         </div>
     </div>
 
     <script>
-        // Configuración inicial de categorías y puntos
         const defaultCategories = ["Historia", "Ciencia", "Geografía", "Deportes", "Cine"];
         const pointValues = [100, 200, 300, 400, 500];
         let gameData = [];
@@ -227,7 +281,20 @@
         let currentPlayer = 0;
         let currentQuestionId = null;
 
-        // Inicializar datos (Cargar de localStorage o crear por defecto)
+        window.onload = () => {
+            initData();
+            updateTeamInputs();
+        };
+
+        function updateTeamInputs() {
+            const count = parseInt(document.getElementById('player-count').value);
+            document.getElementById('team-1').style.display = count >= 1 ? 'block' : 'none';
+            document.getElementById('team-2').style.display = count >= 2 ? 'block' : 'none';
+            document.getElementById('team-3').style.display = count >= 3 ? 'block' : 'none';
+        }
+
+        // --- Manejo de Datos (Local, Exportar e Importar) ---
+
         function initData() {
             const savedData = localStorage.getItem('jeopardyData');
             if (savedData) {
@@ -262,17 +329,60 @@
             localStorage.setItem('jeopardyData', JSON.stringify(gameData));
         }
 
+        function exportData() {
+            // Convertir datos a JSON y crear archivo descargable
+            const dataStr = JSON.stringify(gameData, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = "jeopardy_preguntas.json";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    // Verificación básica para asegurar que es nuestro archivo
+                    if (Array.isArray(importedData) && importedData.length === 25) {
+                        gameData = importedData;
+                        saveData(); // Guarda en localStorage
+                        alert("¡Archivo cargado correctamente! Las preguntas han sido actualizadas.");
+                    } else {
+                        alert("Error: El archivo no tiene el formato correcto del juego.");
+                    }
+                } catch (error) {
+                    alert("Error al leer el archivo. Asegúrate de que es un .json válido.");
+                }
+                // Limpiar el input para permitir cargar el mismo archivo otra vez si se desea
+                document.getElementById('import-file').value = ""; 
+            };
+            reader.readAsText(file);
+        }
+
         // --- Lógica del Juego ---
 
         function startGame() {
             const count = parseInt(document.getElementById('player-count').value);
             players = [];
-            for(let i=0; i<count; i++) {
-                players.push({ name: `Jugador ${i+1}`, score: 0 });
-            }
-            currentPlayer = 0;
             
-            // Resetear estado de respuestas
+            // Recoger los nombres de los equipos
+            for(let i = 0; i < count; i++) {
+                let teamName = document.getElementById(`team-${i+1}`).value.trim();
+                if (teamName === '') teamName = `Equipo ${i+1}`;
+                players.push({ name: teamName, score: 0 });
+            }
+            
+            currentPlayer = 0;
             gameData.forEach(q => q.answered = false);
             
             document.getElementById('setup-screen').style.display = 'none';
@@ -286,7 +396,6 @@
             const board = document.getElementById('board');
             board.innerHTML = '';
 
-            // Dibujar encabezados de categoría (tomando la categoría de la primera fila de cada columna)
             for (let col = 0; col < 5; col++) {
                 const headerObj = gameData.find(q => q.col === col && q.row === 0);
                 const div = document.createElement('div');
@@ -295,7 +404,6 @@
                 board.appendChild(div);
             }
 
-            // Dibujar las celdas (por filas)
             for (let row = 0; row < 5; row++) {
                 for (let col = 0; col < 5; col++) {
                     const qData = gameData.find(q => q.col === col && q.row === row);
@@ -327,6 +435,11 @@
             currentQuestionId = id;
             const qData = gameData.find(q => q.id === id);
             
+            // Limpiar modal anterior
+            const feedbackEl = document.getElementById('feedback-message');
+            feedbackEl.style.display = 'none';
+            feedbackEl.textContent = '';
+
             const imgEl = document.getElementById('q-image');
             if(qData.image) {
                 imgEl.src = qData.image;
@@ -344,41 +457,53 @@
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
                 btn.textContent = opt;
-                btn.onclick = () => checkAnswer(index);
+                btn.onclick = (e) => checkAnswer(index, e.target);
                 optionsContainer.appendChild(btn);
             });
 
             document.getElementById('question-modal').style.display = 'flex';
         }
 
-        function checkAnswer(selectedIndex) {
+        function checkAnswer(selectedIndex, clickedButton) {
             const qData = gameData.find(q => q.id === currentQuestionId);
+            const feedbackEl = document.getElementById('feedback-message');
+            const allBtns = document.querySelectorAll('.option-btn');
             
+            // Deshabilitar botones para no permitir doble clic
+            allBtns.forEach(btn => btn.disabled = true);
+
             if (selectedIndex === parseInt(qData.correctIndex)) {
-                alert("¡Correcto!");
+                clickedButton.classList.add('correct');
+                feedbackEl.textContent = "Resposta Correcta!";
+                feedbackEl.style.color = "#2ecc71";
                 players[currentPlayer].score += qData.points;
             } else {
-                alert(`Incorrecto. La respuesta correcta era: ${qData.options[qData.correctIndex]}`);
+                clickedButton.classList.add('incorrect');
+                // Opcional: Mostrar también la correcta en verde
+                allBtns[parseInt(qData.correctIndex)].classList.add('correct');
+                
+                feedbackEl.textContent = "Resposta Incorrecta!";
+                feedbackEl.style.color = "#e74c3c";
                 players[currentPlayer].score -= qData.points;
             }
 
+            feedbackEl.style.display = 'block';
             qData.answered = true;
-            document.getElementById('question-modal').style.display = 'none';
-            
-            // Pasar turno
-            currentPlayer = (currentPlayer + 1) % players.length;
-            
-            renderBoard();
-            updateScoreboard();
+
+            // Esperar 2 segundos antes de cerrar el modal y pasar turno
+            setTimeout(() => {
+                document.getElementById('question-modal').style.display = 'none';
+                currentPlayer = (currentPlayer + 1) % players.length;
+                renderBoard();
+                updateScoreboard();
+            }, 2000);
         }
 
         // --- Lógica del Administrador ---
-
         function openAdmin() {
             const selector = document.getElementById('edit-selector');
             selector.innerHTML = '';
             
-            // Llenar selector
             gameData.forEach(q => {
                 const opt = document.createElement('option');
                 opt.value = q.id;
@@ -423,7 +548,6 @@
             ];
             qData.correctIndex = document.getElementById('edit-correct').value;
 
-            // Actualizar todas las categorías en la misma columna si se cambia el nombre de la categoría principal
             const newCategoryName = qData.category;
             gameData.forEach(q => {
                 if(q.col === qData.col) q.category = newCategoryName;
@@ -431,11 +555,8 @@
 
             saveData();
             alert("¡Pregunta guardada correctamente!");
-            openAdmin(); // Recargar el selector con nombres actualizados
+            openAdmin();
         }
-
-        // Iniciar la app
-        initData();
     </script>
 </body>
 </html>
