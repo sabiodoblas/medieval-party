@@ -85,7 +85,6 @@
         }
         button:active:not(:disabled) { transform: scale(0.95); }
         button:hover:not(:disabled) { filter: brightness(1.2); }
-        button:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
         
         .admin-btn { background: linear-gradient(to bottom, #4a6fa5, #2b456b); color: var(--parchment); }
         .export-btn { background: linear-gradient(to bottom, #3b7a57, #1f4731); color: var(--parchment); }
@@ -146,22 +145,25 @@
             text-shadow: none;
         }
 
-        /* Scoreboard & Jokers */
+        /* Scoreboard & Jokers Integrados */
         .scoreboard {
             display: flex;
             justify-content: center;
             gap: 25px;
-            margin-bottom: 10px;
+            margin-bottom: 25px;
         }
         .player-score {
             background-color: rgba(0,0,0,0.6);
-            padding: 15px 30px;
+            padding: 15px 20px;
             border-radius: 5px;
             font-size: 22px;
             border: 2px solid var(--gold);
             color: var(--parchment);
             box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-            min-width: 150px;
+            min-width: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .player-score.active { 
             background-color: var(--burgundy); 
@@ -169,13 +171,20 @@
             box-shadow: 0 0 15px var(--gold);
         }
         
-        #jokers-container {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: rgba(0,0,0,0.5);
-            border-radius: 5px;
-            display: inline-block;
-            border: 1px solid var(--dark-gold);
+        .mini-jokers {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--dark-gold);
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+        }
+        .joker-btn-mini {
+            padding: 6px 8px;
+            font-size: 13px;
+            margin: 0;
+            border-width: 1px;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.8);
         }
 
         /* Modals (Question & Admin) */
@@ -301,8 +310,6 @@
         <h2 id="turn-indicator" style="color: var(--gold); margin-top: 0; margin-bottom: 10px; text-shadow: 2px 2px 4px #000;"></h2>
         <div class="scoreboard" id="scoreboard"></div>
         
-        <div id="jokers-container"></div>
-        
         <div class="board" id="board"></div>
         
         <button style="margin-top: 40px;" onclick="location.reload()">Volver al Castillo (Inicio)</button>
@@ -318,26 +325,22 @@
         </div>
     </div>
 
-    <div id="target-modal" class="modal">
+    <div id="target-modal" class="modal" style="z-index: 1100;">
         <div class="modal-content" style="max-width: 450px; text-align: center;">
-            <h2 style="color: var(--burgundy);">¿A qué Gremio deseas aplicar tu poder?</h2>
-            <div id="target-options" style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;"></div>
-            <button class="close-btn" style="margin-top: 30px;" onclick="document.getElementById('target-modal').style.display='none'">Cancelar Comodín</button>
+            <h2 id="target-title" style="color: var(--burgundy);">¿A qué Gremio deseas aplicar tu poder?</h2>
+            <div id="target-options" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 25px;"></div>
+            <button id="cancel-target-btn" class="close-btn" style="margin-top: 30px;" onclick="cancelTarget()">Cancelar Comodín</button>
         </div>
     </div>
 
     <div id="admin-modal" class="modal">
         <div class="modal-content admin-form">
             <h2 style="text-align: center; margin-top: 0;">Sala de Escribanos (Administración)</h2>
-            
             <label>Selecciona el pergamino a editar:</label>
             <select id="edit-selector" onchange="loadQuestionForEdit()"></select>
-            <label>Categoría:</label>
-            <input type="text" id="edit-category">
-            <label>URL de la Pintura/Imagen (Opcional):</label>
-            <input type="text" id="edit-image">
-            <label>Pregunta:</label>
-            <input type="text" id="edit-question">
+            <label>Categoría:</label><input type="text" id="edit-category">
+            <label>URL de la Pintura/Imagen (Opcional):</label><input type="text" id="edit-image">
+            <label>Pregunta:</label><input type="text" id="edit-question">
             <label>Opción 1:</label><input type="text" id="edit-opt0">
             <label>Opción 2:</label><input type="text" id="edit-opt1">
             <label>Opción 3:</label><input type="text" id="edit-opt2">
@@ -363,7 +366,7 @@
         let players = [];
         let currentPlayer = 0;
         let currentQuestionId = null;
-        let activeJoker = null; // { type: 'double'|'attack'|'pass', target: playerIndex }
+        let activeJoker = null; 
         let pendingJokerType = null;
 
         window.onload = () => {
@@ -380,11 +383,8 @@
 
         function initData() {
             const savedData = localStorage.getItem('jeopardyData');
-            if (savedData) {
-                gameData = JSON.parse(savedData);
-            } else {
-                generateDefaultData();
-            }
+            if (savedData) gameData = JSON.parse(savedData);
+            else generateDefaultData();
         }
 
         function generateDefaultData() {
@@ -434,7 +434,7 @@
                         gameData = importedData;
                         saveData(); 
                         alert("¡Pergaminos restaurados! Las preguntas han sido actualizadas.");
-                    } else alert("Error: El pergamino no tiene la magia correcta (formato inválido).");
+                    } else alert("Error: El pergamino no tiene la magia correcta.");
                 } catch (error) { alert("Error al descifrar el pergamino."); }
                 document.getElementById('import-file').value = ""; 
             };
@@ -451,7 +451,7 @@
                 players.push({ 
                     name: teamName, 
                     score: 0,
-                    jokers: { double: true, attack: true, pass: true } // Inicializar comodines
+                    jokers: { double: true, attack: true, pass: true } 
                 });
             }
             
@@ -486,63 +486,97 @@
                     board.appendChild(div);
                 }
             }
-            renderJokers();
         }
 
         function updateScoreboard() {
             const sb = document.getElementById('scoreboard');
             sb.innerHTML = '';
+            
+            const isAnyActive = activeJoker !== null;
+
             players.forEach((p, index) => {
                 const div = document.createElement('div');
                 div.className = 'player-score' + (index === currentPlayer ? ' active' : '');
-                div.innerHTML = `<strong>${p.name}</strong><br>💰 ${p.score}`;
+                
+                // Info principal (Nombre y oro)
+                const infoDiv = document.createElement('div');
+                infoDiv.innerHTML = `<strong>${p.name}</strong><br>💰 ${p.score}`;
+                div.appendChild(infoDiv);
+
+                // Sección de Comodines integrados
+                const jokersDiv = document.createElement('div');
+                jokersDiv.className = 'mini-jokers';
+                
+                const isCurrent = (index === currentPlayer);
+
+                // Función auxiliar para crear y configurar cada botón de comodín
+                const createJokerBtn = (type, icon, text, glowColor) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'joker-btn-mini';
+                    btn.textContent = `${icon} ${text}`;
+                    btn.title = text; // Muestra el nombre completo al pasar el ratón
+
+                    if (!p.jokers[type]) {
+                        // Comodín ya gastado permanentemente
+                        btn.disabled = true;
+                        btn.style.opacity = '0.2';
+                        btn.style.filter = 'grayscale(1)';
+                        btn.style.cursor = 'not-allowed';
+                    } else if (!isCurrent) {
+                        // El jugador tiene el comodín pero no es su turno
+                        btn.disabled = true;
+                        btn.style.opacity = '0.6';
+                    } else if (isAnyActive && activeJoker.type !== type) {
+                        // Es su turno pero seleccionó OTRO comodín
+                        btn.disabled = true;
+                        btn.style.opacity = '0.6';
+                    } else {
+                        // Comodín disponible y clickeable
+                        btn.onclick = () => activateJoker(type);
+                        if (activeJoker && activeJoker.type === type) {
+                            btn.style.boxShadow = `0 0 15px ${glowColor}`;
+                        }
+                    }
+                    return btn;
+                };
+
+                jokersDiv.appendChild(createJokerBtn('double', '⚔️', 'x2', '#27ae60'));
+                
+                if (players.length > 1) {
+                    jokersDiv.appendChild(createJokerBtn('attack', '🏹', 'Atq', '#c0392b'));
+                    jokersDiv.appendChild(createJokerBtn('pass', '🛡️', 'Ceder', '#f39c12'));
+                }
+
+                div.appendChild(jokersDiv);
                 sb.appendChild(div);
             });
             document.getElementById('turn-indicator').textContent = `Turno actual: ${players[currentPlayer].name}`;
-            renderJokers();
         }
 
-        // --- SISTEMA DE COMODINES ---
-        function renderJokers() {
-            const container = document.getElementById('jokers-container');
-            container.innerHTML = `<span style="color: var(--gold); font-family: 'Cinzel', serif; font-size: 18px; margin-right: 15px;">Comodines Disponibles:</span>`;
-            
-            const p = players[currentPlayer];
-            const isAnyActive = activeJoker !== null;
-
-            // Botón x2
-            const btnDouble = document.createElement('button');
-            btnDouble.textContent = "⚔️ x2 Puntos";
-            btnDouble.disabled = !p.jokers.double || (isAnyActive && activeJoker.type !== 'double');
-            if(activeJoker && activeJoker.type === 'double') btnDouble.style.boxShadow = "0 0 20px #27ae60";
-            btnDouble.onclick = () => activateJoker('double');
-            container.appendChild(btnDouble);
-
-            // Botones de Ataque y Ceder (solo si hay más de 1 jugador)
-            if (players.length > 1) {
-                const btnAttack = document.createElement('button');
-                btnAttack.textContent = "🏹 Ataque";
-                btnAttack.disabled = !p.jokers.attack || (isAnyActive && activeJoker.type !== 'attack');
-                if(activeJoker && activeJoker.type === 'attack') btnAttack.style.boxShadow = "0 0 20px #c0392b";
-                btnAttack.onclick = () => activateJoker('attack');
-                container.appendChild(btnAttack);
-
-                const btnPass = document.createElement('button');
-                btnPass.textContent = "🛡️ Ceder Turno";
-                btnPass.disabled = !p.jokers.pass || (isAnyActive && activeJoker.type !== 'pass');
-                if(activeJoker && activeJoker.type === 'pass') btnPass.style.boxShadow = "0 0 20px #f39c12";
-                btnPass.onclick = () => activateJoker('pass');
-                container.appendChild(btnPass);
-            }
-        }
-
+        // --- LÓGICA DE COMODINES ---
         function activateJoker(type) {
+            const p = players[currentPlayer];
+            
+            // Si el jugador se arrepiente y hace clic en el mismo comodín ANTES de abrir pregunta, se le devuelve.
+            if (activeJoker && activeJoker.type === type) {
+                activeJoker = null;
+                p.jokers[type] = true;
+                updateScoreboard();
+                return;
+            }
+            
+            if (activeJoker) return; // Si intenta activar otro pero ya hay uno activo
+
             if (type === 'double') {
                 activeJoker = { type: 'double', target: null };
-                players[currentPlayer].jokers.double = false;
-                renderJokers();
-            } else {
-                pendingJokerType = type;
+                p.jokers.double = false;
+                updateScoreboard();
+            } else if (type === 'pass') {
+                activeJoker = { type: 'pass', target: null }; 
+                p.jokers.pass = false;
+                updateScoreboard();
+            } else if (type === 'attack') {
+                pendingJokerType = 'attack';
                 showTargetModal();
             }
         }
@@ -550,6 +584,14 @@
         function showTargetModal() {
             const options = document.getElementById('target-options');
             options.innerHTML = '';
+            
+            document.getElementById('target-title').textContent = pendingJokerType === 'pass' 
+                ? "¡Patata Caliente! ¿A qué Gremio obligas a responder?" 
+                : "¿A qué Gremio deseas aplicar tu ataque?";
+                
+            // Ocultar botón de cancelar si ya estamos dentro de la pregunta (Ceder Turno)
+            document.getElementById('cancel-target-btn').style.display = pendingJokerType === 'pass' ? 'none' : 'inline-block';
+
             players.forEach((p, index) => {
                 if (index !== currentPlayer) {
                     const btn = document.createElement('button');
@@ -562,11 +604,29 @@
         }
 
         function selectTarget(targetIndex) {
-            activeJoker = { type: pendingJokerType, target: targetIndex };
-            if (pendingJokerType === 'attack') players[currentPlayer].jokers.attack = false;
-            if (pendingJokerType === 'pass') players[currentPlayer].jokers.pass = false;
+            if (pendingJokerType === 'attack') {
+                activeJoker = { type: 'attack', target: targetIndex };
+                players[currentPlayer].jokers.attack = false;
+                document.getElementById('target-modal').style.display = 'none';
+                updateScoreboard();
+            } else if (pendingJokerType === 'pass') {
+                activeJoker.target = targetIndex;
+                document.getElementById('target-modal').style.display = 'none';
+                
+                // Retomar visualización de la pregunta
+                document.getElementById('q-options').style.display = 'grid';
+                const indicatorEl = document.getElementById('answering-indicator');
+                indicatorEl.textContent = `¡El destino aguarda! Responde: ${players[targetIndex].name}`;
+                indicatorEl.style.display = 'block';
+            }
+        }
+
+        function cancelTarget() {
+            if (pendingJokerType === 'attack') {
+                players[currentPlayer].jokers.attack = true; 
+            }
             document.getElementById('target-modal').style.display = 'none';
-            renderJokers();
+            updateScoreboard();
         }
 
         // --- APERTURA Y COMPROBACIÓN DE PREGUNTA ---
@@ -586,19 +646,10 @@
                 imgEl.style.display = 'none';
             }
 
-            // Indicador de quién responde (útil si se usa comodín Ceder)
-            const indicatorEl = document.getElementById('answering-indicator');
-            let answeringPlayer = currentPlayer;
-            if (activeJoker && activeJoker.type === 'pass') answeringPlayer = activeJoker.target;
-            
-            indicatorEl.textContent = `¡El destino aguarda! Responde: ${players[answeringPlayer].name}`;
-            indicatorEl.style.display = 'block';
-
             document.getElementById('q-text').textContent = qData.question;
             
             const optionsContainer = document.getElementById('q-options');
             optionsContainer.innerHTML = '';
-            
             qData.options.forEach((opt, index) => {
                 const btn = document.createElement('button');
                 btn.className = 'option-btn';
@@ -606,6 +657,18 @@
                 btn.onclick = (e) => checkAnswer(index, e.target);
                 optionsContainer.appendChild(btn);
             });
+
+            // Si se usó Ceder Turno, pausamos las opciones y preguntamos a quién
+            if (activeJoker && activeJoker.type === 'pass') {
+                document.getElementById('q-options').style.display = 'none';
+                pendingJokerType = 'pass';
+                showTargetModal();
+            } else {
+                document.getElementById('q-options').style.display = 'grid';
+                const indicatorEl = document.getElementById('answering-indicator');
+                indicatorEl.textContent = `¡El destino aguarda! Responde: ${players[currentPlayer].name}`;
+                indicatorEl.style.display = 'block';
+            }
 
             document.getElementById('question-modal').style.display = 'flex';
         }
@@ -621,15 +684,8 @@
             let points = qData.points;
             let answeringPlayer = currentPlayer;
 
-            // Determinar si aplica el comodín Ceder
-            if (activeJoker && activeJoker.type === 'pass') {
-                answeringPlayer = activeJoker.target;
-            }
-
-            // Determinar si aplica el multiplicador x2
-            if (activeJoker && activeJoker.type === 'double') {
-                points *= 2;
-            }
+            if (activeJoker && activeJoker.type === 'pass') answeringPlayer = activeJoker.target;
+            if (activeJoker && activeJoker.type === 'double') points *= 2;
 
             if (isCorrect) {
                 clickedButton.classList.add('correct');
@@ -638,9 +694,8 @@
                 
                 players[answeringPlayer].score += points;
 
-                // Si acierta y hay Ataque, restar al objetivo
                 if (activeJoker && activeJoker.type === 'attack') {
-                    players[activeJoker.target].score -= qData.points; // Resta puntuación normal
+                    players[activeJoker.target].score -= qData.points; 
                     feedbackEl.textContent += ` ¡Y restas ${qData.points} a ${players[activeJoker.target].name}!`;
                 }
             } else {
@@ -653,16 +708,15 @@
                 players[answeringPlayer].score -= points;
             }
 
-            // Mensajes adicionales según comodín
             if (activeJoker && activeJoker.type === 'double') {
                 feedbackEl.textContent += ` (¡X2 Aplicado!)`;
             } else if (activeJoker && activeJoker.type === 'pass') {
-                feedbackEl.textContent += ` (${players[answeringPlayer].name} asume el destino)`;
+                feedbackEl.textContent += ` (${players[answeringPlayer].name} asume el castigo/premio)`;
             }
 
             feedbackEl.style.display = 'block';
             qData.answered = true;
-            activeJoker = null; // Reiniciar comodín después de usarse
+            activeJoker = null; 
 
             setTimeout(() => {
                 document.getElementById('question-modal').style.display = 'none';
