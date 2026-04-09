@@ -487,7 +487,8 @@
 </head>
 <body>
     <div class="game-header">
-        <h1> MEDIEVIAL PARTY</h1>
+        <h1> MEDIEVIAL</h1>
+        <div class="subtitle">Buy, Sell &amp; Save Money</div>
     </div>
 
     <div class="score-board">
@@ -506,16 +507,16 @@
     </div>
 
     <div class="controls">
-        <button class="control-btn" onclick="resetGame()">🔄 Joc nou</button>
-        <button class="control-btn" onclick="resetScores()">📊 Reset</button>
+        <button class="control-btn" onclick="resetGame()">🔄 New Game</button>
+        <button class="control-btn" onclick="resetScores()">📊 Reset Scores</button>
     </div>
 
-    <div class="board" id="gameBoard"><div class="category">Preu just</div><div class="category">Cultura</div><div class="category">El futur</div><div class="category">Sorpresa</div><div class="category">La foto</div><div class="cell used" data-category="Vocabulary" data-value="100">$100</div><div class="cell" data-category="Speaking" data-value="100">$100</div><div class="cell" data-category="Comprehension" data-value="100">$100</div><div class="cell" data-category="Surprise!" data-value="100">$100</div><div class="cell" data-category="Grammar" data-value="100">$100</div><div class="cell" data-category="Vocabulary" data-value="200">$200</div><div class="cell" data-category="Speaking" data-value="200">$200</div><div class="cell" data-category="Comprehension" data-value="200">$200</div><div class="cell" data-category="Surprise!" data-value="200">$200</div><div class="cell" data-category="Grammar" data-value="200">$200</div><div class="cell" data-category="Vocabulary" data-value="300">$300</div><div class="cell" data-category="Speaking" data-value="300">$300</div><div class="cell" data-category="Comprehension" data-value="300">$300</div><div class="cell" data-category="Surprise!" data-value="300">$300</div><div class="cell" data-category="Grammar" data-value="300">$300</div><div class="cell" data-category="Vocabulary" data-value="400">$400</div><div class="cell" data-category="Speaking" data-value="400">$400</div><div class="cell" data-category="Comprehension" data-value="400">$400</div><div class="cell" data-category="Surprise!" data-value="400">$400</div><div class="cell" data-category="Grammar" data-value="400">$400</div><div class="cell" data-category="Vocabulary" data-value="500">$500</div><div class="cell" data-category="Speaking" data-value="500">$500</div><div class="cell" data-category="Comprehension" data-value="500">$500</div><div class="cell" data-category="Surprise!" data-value="500">$500</div><div class="cell" data-category="Grammar" data-value="500">$500</div></div>
+    <div class="board" id="gameBoard"><div class="category">Vocabulary</div><div class="category">Speaking</div><div class="category">Comprehension</div><div class="category">Surprise!</div><div class="category">Grammar</div><div class="cell used" data-category="Vocabulary" data-value="100">$100</div><div class="cell" data-category="Speaking" data-value="100">$100</div><div class="cell" data-category="Comprehension" data-value="100">$100</div><div class="cell" data-category="Surprise!" data-value="100">$100</div><div class="cell" data-category="Grammar" data-value="100">$100</div><div class="cell" data-category="Vocabulary" data-value="200">$200</div><div class="cell" data-category="Speaking" data-value="200">$200</div><div class="cell" data-category="Comprehension" data-value="200">$200</div><div class="cell" data-category="Surprise!" data-value="200">$200</div><div class="cell" data-category="Grammar" data-value="200">$200</div><div class="cell" data-category="Vocabulary" data-value="300">$300</div><div class="cell" data-category="Speaking" data-value="300">$300</div><div class="cell" data-category="Comprehension" data-value="300">$300</div><div class="cell" data-category="Surprise!" data-value="300">$300</div><div class="cell" data-category="Grammar" data-value="300">$300</div><div class="cell" data-category="Vocabulary" data-value="400">$400</div><div class="cell" data-category="Speaking" data-value="400">$400</div><div class="cell" data-category="Comprehension" data-value="400">$400</div><div class="cell" data-category="Surprise!" data-value="400">$400</div><div class="cell" data-category="Grammar" data-value="400">$400</div><div class="cell" data-category="Vocabulary" data-value="500">$500</div><div class="cell" data-category="Speaking" data-value="500">$500</div><div class="cell" data-category="Comprehension" data-value="500">$500</div><div class="cell" data-category="Surprise!" data-value="500">$500</div><div class="cell" data-category="Grammar" data-value="500">$500</div></div>
 
     <div id="questionModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="question-header">
-                <div class="question-category" id="modalCategory">Preu Just</div>
+                <div class="question-category" id="modalCategory">Vocabulary</div>
                 <div class="question-value" id="modalValue">$100</div>
             </div>
             
@@ -527,18 +528,18 @@
                 <div class="choices-container" id="choicesContainer"><button class="choice-btn">A) Sell</button><button class="choice-btn selected correct">B) Buy</button><button class="choice-btn">C) Give</button><button class="choice-btn">D) Take</button></div>
             </div>
 
-            <div class="result-message correct" id="resultMessage" style="display: block;">✓ Correcte</div>
+            <div class="result-message correct" id="resultMessage" style="display: block;">✓ CORRECT! Great shopping skills! 🛒</div>
 
             <div class="button-group">
-                <button class="action-btn" id="checkBtn" onclick="checkAnswer()" style="display: block;">Comprovar</button>
-                <button class="action-btn" id="nextBtn" onclick="closeModal()" style="display: block;">Seguent</button>
+                <button class="action-btn" id="checkBtn" onclick="checkAnswer()" style="display: block;">Check Answer</button>
+                <button class="action-btn" id="nextBtn" onclick="closeModal()" style="display: block;">Next Question</button>
             </div>
 
             <div class="team-selector" id="teamSelector" style="display: none;">
-                <p style="font-size: 2em; width: 100%; text-align: center; margin-bottom: 15px;">Quin equip ha respost</p>
-                <button class="team-select-btn" onclick="selectTeam(1)">Sir Lanceflop</button>
-                <button class="team-select-btn selected" onclick="selectTeam(2)">Joana Fart</button>
-                <button class="team-select-btn" onclick="selectTeam(3)">Rei Arturito</button>
+                <p style="font-size: 2em; width: 100%; text-align: center; margin-bottom: 15px;">Which team answered?</p>
+                <button class="team-select-btn" onclick="selectTeam(1)">Team 1</button>
+                <button class="team-select-btn selected" onclick="selectTeam(2)">Team 2</button>
+                <button class="team-select-btn" onclick="selectTeam(3)">Team 3</button>
             </div>
         </div>
     </div>
@@ -585,137 +586,174 @@
                     correct: 0
                 }
             },
-            
             "Speaking": {
-                 100: {
-                    q: "What word means 'to get something by paying money'?",
-                    choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
-                    correct: 1
+                100: {
+                    type: "speaking",
+                    q: "SPEAKING CHALLENGE (30 seconds)\n\nDescribe your favorite store.\n\nUse: I like..., They sell..., The prices are...",
+                    hasTimer: true,
+                    timerSeconds: 30,
+                    hint: "Mention what they sell and why you like it."
                 },
                 200: {
-                    q: "If something is 'expensive', what does that mean?",
-                    choices: ["A) It costs little money", "B) It is free", "C) It costs a lot of money", "D) It is broken"],
-                    correct: 2
+                    type: "speaking",
+                    q: "SPEAKING CHALLENGE (45 seconds)\n\nYou want to buy a gift but have a small budget. What do you do?\n\nUse: I need to..., I can look for..., Maybe I should...",
+                    hasTimer: true,
+                    timerSeconds: 45,
+                    hint: "Talk about finding sales, comparing prices, or making something."
                 },
                 300: {
-                    q: "What is a 'receipt'?",
-                    choices: ["A) A type of money", "B) A paper that shows what you bought", "C) A special sale", "D) A shopping cart"],
-                    correct: 1
+                    type: "speaking",
+                    q: "SPEAKING CHALLENGE (45 seconds)\n\nYou find a product you like but it is expensive. How do you decide whether to buy it?\n\nUse: First, I would..., Then I..., Finally...",
+                    hasTimer: true,
+                    timerSeconds: 45,
+                    hint: "Talk about checking your budget, looking for sales, or waiting."
                 },
                 400: {
-                    q: "What is the difference between 'cheap' and 'expensive'?\n\nCheap = costs little money\nExpensive = costs a lot of money",
-                    choices: ["A) They mean exactly the same thing", "B) 'Cheap' means bad quality", "C) 'Cheap' costs little, 'expensive' costs a lot", "D) Only 'expensive' things can be returned"],
-                    correct: 2
+                    type: "speaking",
+                    q: "SPEAKING CHALLENGE (60 seconds)\n\nTell a story about the best thing you ever bought. What was it? How much did it cost? Why was it special?",
+                    hasTimer: true,
+                    timerSeconds: 60,
+                    hint: "Use past tense: bought, was, cost, felt, used"
                 },
                 500: {
-                    q: "What does 'refund' mean?",
-                    choices: [
-                        "A) Money returned when you return an item",
-                        "B) A type of credit card",
-                        "C) A store worker",
-                        "D) A shopping bag"
-                    ],
-                    correct: 0
+                    type: "speaking",
+                    q: "SPEAKING CHALLENGE (60 seconds)\n\nCompare online shopping and shopping in stores. Which is better?\n\nGive your opinion with at least 2 reasons.",
+                    hasTimer: true,
+                    timerSeconds: 60,
+                    hint: "Use: I think... is better because... / Both have advantages, but..."
                 }
             },
-            
             "Comprehension": {
-                 100: {
-                    q: "What word means 'to get something by paying money'?",
-                    choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
+                100: {
+                    type: "comprehension",
+                    passage: "Shopping can be fun and easy. Many people like to buy clothes, food, and gifts. Some people prefer to go to big stores, while others like to shop online. It is important to check the price before buying.",
+                    q: "What do many people like to buy?",
+                    choices: ["A) Only clothes", "B) Clothes, food, and gifts", "C) Only food", "D) Only electronics"],
                     correct: 1
                 },
                 200: {
-                    q: "If something is 'expensive', what does that mean?",
-                    choices: ["A) It costs little money", "B) It is free", "C) It costs a lot of money", "D) It is broken"],
-                    correct: 2
+                    type: "comprehension",
+                    passage: "When you go shopping, it is important to have a budget. A budget helps you avoid spending too much money. You can plan what to buy and compare prices in different stores.",
+                    q: "According to the passage, why is having a budget important?",
+                    choices: ["A) It makes shopping faster", "B) It helps you avoid spending too much money", "C) It gives you discounts", "D) Stores give you free items"],
+                    correct: 1
                 },
                 300: {
-                    q: "What is a 'receipt'?",
-                    choices: ["A) A type of money", "B) A paper that shows what you bought", "C) A special sale", "D) A shopping cart"],
+                    type: "comprehension",
+                    passage: "Some shops offer discounts during holidays or special sales. Always check the quality of the product before you make a purchase. If you don't like something, you can return it for a refund.",
+                    q: "When do some shops offer discounts?",
+                    choices: [
+                        "A) Every day",
+                        "B) During holidays or special sales",
+                        "C) Only in the morning",
+                        "D) Never"
+                    ],
                     correct: 1
                 },
                 400: {
-                    q: "What is the difference between 'cheap' and 'expensive'?\n\nCheap = costs little money\nExpensive = costs a lot of money",
-                    choices: ["A) They mean exactly the same thing", "B) 'Cheap' means bad quality", "C) 'Cheap' costs little, 'expensive' costs a lot", "D) Only 'expensive' things can be returned"],
-                    correct: 2
+                    type: "comprehension",
+                    passage: "With the rise of online shopping, it is easier to find the best deals, but it is also important to be careful to avoid scams. Always check reviews before buying from a new website. If the price seems too good to be true, it probably is.",
+                    q: "According to the passage, why should consumers be careful with online shopping?",
+                    choices: [
+                        "A) Because it is too slow",
+                        "B) To avoid scams",
+                        "C) Because shipping is expensive",
+                        "D) Because stores are better"
+                    ],
+                    correct: 1
                 },
                 500: {
-                    q: "What does 'refund' mean?",
+                    type: "comprehension",
+                    passage: "When you go shopping, it is important to bring a list. A list helps you remember what you need to buy and prevents you from buying things you do not need. Also, it is good to check your budget before shopping. Paying with cash can help you control your spending better than using a card.",
+                    q: "Based on the passage, which statement is TRUE?",
                     choices: [
-                        "A) Money returned when you return an item",
-                        "B) A type of credit card",
-                        "C) A store worker",
-                        "D) A shopping bag"
+                        "A) Credit cards help you spend less",
+                        "B) A list helps you remember what to buy",
+                        "C) You should never check prices",
+                        "D) Budgets are not important"
                     ],
-                    correct: 0
+                    correct: 1
                 }
             },
-            
             "Surprise!": {
-                 100: {
-                    q: "What word means 'to get something by paying money'?",
-                    choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
-                    correct: 1
+                100: {
+                    type: "surprise",
+                    q: "UNSCRAMBLE THE WORD\n\nThese letters spell something you use to pay:\n\nT E L L A W",
+                    inputType: "text",
+                    correct: "wallet"
                 },
                 200: {
-                    q: "If something is 'expensive', what does that mean?",
-                    choices: ["A) It costs little money", "B) It is free", "C) It costs a lot of money", "D) It is broken"],
-                    correct: 2
+                    type: "surprise",
+                    q: "TRUE OR FALSE\n\nA 'cashier' is a person who handles payments in a store.",
+                    choices: ["A) TRUE", "B) FALSE"],
+                    correct: 0
                 },
                 300: {
-                    q: "What is a 'receipt'?",
-                    choices: ["A) A type of money", "B) A paper that shows what you bought", "C) A special sale", "D) A shopping cart"],
-                    correct: 1
+                    type: "surprise",
+                    q: "IDIOM CHALLENGE\n\nWhat does 'cost an arm and a leg' mean?\n\nType your answer:",
+                    inputType: "text",
+                    correct: "very expensive",
+                    acceptVariations: true,
+                    hint: "Think about the word 'cost'..."
                 },
                 400: {
-                    q: "What is the difference between 'cheap' and 'expensive'?\n\nCheap = costs little money\nExpensive = costs a lot of money",
-                    choices: ["A) They mean exactly the same thing", "B) 'Cheap' means bad quality", "C) 'Cheap' costs little, 'expensive' costs a lot", "D) Only 'expensive' things can be returned"],
-                    correct: 2
+                    type: "surprise",
+                    q: "SHOPPING WORDS CHALLENGE\n\nName 5 things you can buy at a store in 20 seconds!\n\n(Teacher checks the answer)",
+                    hasTimer: true,
+                    timerSeconds: 20,
+                    type: "speaking"
                 },
                 500: {
-                    q: "What does 'refund' mean?",
-                    choices: [
-                        "A) Money returned when you return an item",
-                        "B) A type of credit card",
-                        "C) A store worker",
-                        "D) A shopping bag"
-                    ],
-                    correct: 0
+                    type: "surprise",
+                    q: "IDIOM CHALLENGE\n\nWhat does 'window shopping' mean?\n\nExample: 'We spent the afternoon window shopping at the mall.'\n\nType your answer:",
+                    inputType: "text",
+                    correct: "looking without buying",
+                    acceptVariations: true,
+                    hint: "It's about looking at things in stores..."
                 }
             },
-            
             "Grammar": {
-                 100: {
-                    q: "What word means 'to get something by paying money'?",
-                    choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
+                100: {
+                    q: "Choose the correct comparative:\n\n'An elephant is _____ than a mouse.'",
+                    choices: [
+                        "A) big",
+                        "B) bigger",
+                        "C) more big",
+                        "D) biger"
+                    ],
                     correct: 1
                 },
                 200: {
-                    q: "If something is 'expensive', what does that mean?",
-                    choices: ["A) It costs little money", "B) It is free", "C) It costs a lot of money", "D) It is broken"],
-                    correct: 2
+                    q: "Complete the sentence:\n\n'This jacket is _____ than that one.'",
+                    choices: ["A) more expensive", "B) expensiver", "C) most expensive", "D) expensive"],
+                    correct: 0
                 },
                 300: {
-                    q: "What is a 'receipt'?",
-                    choices: ["A) A type of money", "B) A paper that shows what you bought", "C) A special sale", "D) A shopping cart"],
+                    q: "Which sentence uses the comparative correctly?",
+                    choices: [
+                        "A) My phone is more cheap than yours.",
+                        "B) My phone is cheaper than yours.",
+                        "C) My phone is cheapper than yours.",
+                        "D) My phone is most cheap than yours."
+                    ],
                     correct: 1
                 },
                 400: {
-                    q: "What is the difference between 'cheap' and 'expensive'?\n\nCheap = costs little money\nExpensive = costs a lot of money",
-                    choices: ["A) They mean exactly the same thing", "B) 'Cheap' means bad quality", "C) 'Cheap' costs little, 'expensive' costs a lot", "D) Only 'expensive' things can be returned"],
+                    q: "Choose the correct sentence:\n\n'Her English is _____ than mine.'",
+                    choices: ["A) gooder", "B) more good", "C) better", "D) goodest"],
                     correct: 2
                 },
                 500: {
-                    q: "What does 'refund' mean?",
+                    q: "Find the ERROR in this sentence:\n\n'Online shopping is more easy than going to stores.'",
                     choices: [
-                        "A) Money returned when you return an item",
-                        "B) A type of credit card",
-                        "C) A store worker",
-                        "D) A shopping bag"
+                        "A) 'Online' should be 'On-line'",
+                        "B) 'more easy' should be 'easier'",
+                        "C) 'going' should be 'go'",
+                        "D) There are no errors"
                     ],
-                    correct: 0
+                    correct: 1
                 }
+            }
         };
 
         let scores = [0, 0, 0];
@@ -889,10 +927,10 @@
                 }
 
                 if (isCorrect) {
-                    resultMessage.textContent = `✓ Correcte la resposta es: ${currentQuestion.correct}`;
+                    resultMessage.textContent = `✓ CORRECT! The answer is: ${currentQuestion.correct}`;
                     resultMessage.className = 'result-message correct';
                 } else {
-                    resultMessage.textContent = `✗ Incorrecte, la resposta era: ${currentQuestion.correct}`;
+                    resultMessage.textContent = `✗ Not quite. The correct answer is: ${currentQuestion.correct}`;
                     resultMessage.className = 'result-message incorrect';
                 }
             } else {
@@ -910,11 +948,11 @@
                 });
 
                 if (isCorrect) {
-                    resultMessage.textContent = '✓ Correcte!';
+                    resultMessage.textContent = '✓ CORRECT! Great shopping skills! 🛒';
                     resultMessage.className = 'result-message correct';
                 } else {
                     const correctLetter = String.fromCharCode(65 + currentCorrect);
-                    resultMessage.textContent = `Incorrecte, la resposta era: ${correctLetter}.`;
+                    resultMessage.textContent = `✗ Not quite. The correct answer was ${correctLetter}.`;
                     resultMessage.className = 'result-message incorrect';
                 }
             }
@@ -978,7 +1016,7 @@
         }
 
         function resetGame() {
-            if (confirm('Joc nou?')) {
+            if (confirm('Start a new game? This will reset the board and all scores.')) {
                 scores = [0, 0, 0];
                 updateScores();
                 initBoard();
@@ -987,7 +1025,7 @@
         }
 
         function resetScores() {
-            if (confirm('Reset')) {
+            if (confirm('Reset all scores to zero?')) {
                 scores = [0, 0, 0];
                 updateScores();
             }
