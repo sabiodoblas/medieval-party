@@ -3,59 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jeopardy Personalizado</title>
+    <title>Medieval Party</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=MedievalSharp&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --jeopardy-blue: #060CE9;
-            --jeopardy-yellow: #FFCC00;
-            --text-light: #FFFFFF;
-            --bg-dark: #000000;
+            /* Paleta de colores Medieval */
+            --bg-dark: #1a110b;          /* Oscuro, fondo de castillo */
+            --bg-gradient: #2c1e16;      /* Madera oscura */
+            --gold: #d4af37;             /* Oro envejecido */
+            --dark-gold: #997a00;
+            --burgundy: #58181f;         /* Rojo Borgoña */
+            --parchment: #f1e4c3;        /* Pergamino claro */
+            --parchment-dark: #d5c39a;   /* Pergamino oscuro */
+            --stone: #3a3b3c;            /* Piedra (preguntas usadas) */
+            --text-light: #f5f0e6;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'MedievalSharp', serif;
             background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at center, var(--bg-gradient) 0%, var(--bg-dark) 100%);
             color: var(--text-light);
             margin: 0;
             padding: 20px;
             text-align: center;
+            min-height: 100vh;
         }
 
-        h1 { color: var(--jeopardy-yellow); font-size: 40px; }
+        h1, h2, .category-header, button {
+            font-family: 'Cinzel', serif;
+        }
+
+        h1 { 
+            color: var(--gold); 
+            font-size: 50px; 
+            text-shadow: 3px 3px 6px #000;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+        }
 
         /* Setup Screen */
         #setup-screen { margin-top: 30px; }
         .setup-box {
-            background-color: #222;
-            padding: 30px;
-            border-radius: 10px;
+            background-color: rgba(20, 10, 5, 0.8);
+            padding: 40px;
+            border-radius: 5px;
+            border: 3px solid var(--gold);
             display: inline-block;
             max-width: 600px;
             width: 100%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
-        select, button, input {
+        
+        select, input {
             padding: 10px;
             margin: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
+            font-size: 18px;
+            border-radius: 3px;
+            border: 2px solid var(--gold);
+            background-color: var(--parchment);
+            font-family: 'MedievalSharp', serif;
+            color: #333;
         }
+
         button {
             cursor: pointer;
-            background-color: var(--jeopardy-yellow);
-            color: var(--bg-dark);
+            background: linear-gradient(to bottom, var(--gold), var(--dark-gold));
+            color: #111;
             font-weight: bold;
-            transition: transform 0.1s;
+            font-size: 18px;
+            padding: 12px 20px;
+            margin: 10px;
+            border: 2px solid #000;
+            border-radius: 3px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+            transition: transform 0.1s, filter 0.3s;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
         }
         button:active { transform: scale(0.95); }
-        button:hover { background-color: #e6b800; }
+        button:hover:not(:disabled) { filter: brightness(1.2); }
         
-        .admin-btn { background-color: #3498db; color: white; }
-        .admin-btn:hover { background-color: #2980b9; }
-        .export-btn { background-color: #27ae60; color: white; }
-        .export-btn:hover { background-color: #2ecc71; }
-        .import-btn { background-color: #f39c12; color: white; }
-        .import-btn:hover { background-color: #f1c40f; }
+        .admin-btn { background: linear-gradient(to bottom, #4a6fa5, #2b456b); color: var(--parchment); }
+        .export-btn { background: linear-gradient(to bottom, #3b7a57, #1f4731); color: var(--parchment); }
+        .import-btn { background: linear-gradient(to bottom, #b85d19, #7a3a0c); color: var(--parchment); }
 
         #team-inputs {
             margin-top: 15px;
@@ -69,77 +103,107 @@
         .board {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
-            max-width: 1000px;
+            gap: 15px;
+            max-width: 1100px;
             margin: 20px auto;
         }
         .category-header {
-            background-color: var(--jeopardy-blue);
-            color: var(--text-light);
-            font-weight: bold;
+            background-color: #110b07;
+            color: var(--gold);
+            font-weight: 800;
             padding: 15px 5px;
             text-transform: uppercase;
-            font-size: 18px;
-            border: 2px solid white;
+            font-size: 20px;
+            border: 2px solid var(--gold);
+            border-radius: 3px;
+            text-shadow: 2px 2px 4px #000;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
         }
         .card {
-            background-color: var(--jeopardy-blue);
-            color: var(--jeopardy-yellow);
-            font-size: 24px;
+            background-color: var(--burgundy);
+            color: var(--gold);
+            font-size: 28px;
             font-weight: bold;
             padding: 30px 10px;
             cursor: pointer;
-            border: 2px solid var(--text-light);
-            transition: transform 0.1s;
+            border: 2px solid var(--gold);
+            border-radius: 5px;
+            transition: transform 0.1s, border-color 0.3s;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 3px 3px 6px rgba(0,0,0,0.5);
+            text-shadow: 2px 2px 3px black;
+            font-family: 'Cinzel', serif;
         }
-        .card:hover { transform: scale(1.05); }
+        .card:hover { 
+            transform: scale(1.05); 
+            border-color: #ffdf70;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5), 0 0 15px var(--gold);
+        }
         .card.disabled {
-            background-color: #111;
-            color: #444;
+            background-color: var(--stone);
+            color: #1a1a1a;
             cursor: not-allowed;
-            border-color: #444;
+            border-color: #222;
+            box-shadow: inset 0 0 20px #000;
+            text-shadow: none;
         }
 
         /* Scoreboard (Arriba) */
         .scoreboard {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             margin-bottom: 20px;
         }
         .player-score {
-            background-color: #222;
+            background-color: rgba(0,0,0,0.6);
             padding: 15px 30px;
             border-radius: 5px;
-            font-size: 20px;
-            border: 2px solid var(--jeopardy-yellow);
+            font-size: 22px;
+            border: 2px solid var(--gold);
+            color: var(--parchment);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
         }
-        .player-score.active { background-color: var(--jeopardy-blue); }
+        .player-score.active { 
+            background-color: var(--burgundy); 
+            border-color: #ffdf70;
+            box-shadow: 0 0 15px var(--gold);
+        }
 
         /* Modals (Question & Admin) */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.95);
+            background-color: rgba(0,0,0,0.9);
             z-index: 1000;
             justify-content: center;
             align-items: center;
         }
         .modal-content {
-            background-color: var(--jeopardy-blue);
-            padding: 30px;
-            border-radius: 10px;
-            max-width: 700px;
+            background-image: url('https://www.transparenttextures.com/patterns/aged-paper.png');
+            background-color: var(--parchment);
+            color: #222;
+            padding: 40px;
+            border-radius: 5px;
+            max-width: 800px;
             width: 90%;
-            border: 3px solid var(--jeopardy-yellow);
+            border: 6px solid var(--dark-gold);
+            box-shadow: 0 0 30px #000, inset 0 0 50px rgba(139, 69, 19, 0.3);
+        }
+        .modal-content h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--burgundy);
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
         .modal-content img {
             max-width: 100%;
-            height: 250px;
+            height: 300px;
             object-fit: cover;
             border-radius: 5px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            border: 4px solid var(--burgundy);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
         .options-grid {
             display: grid;
@@ -148,80 +212,89 @@
             margin-top: 20px;
         }
         .option-btn {
-            background-color: #fff;
-            color: #000;
-            padding: 15px;
-            font-size: 18px;
-            transition: background-color 0.3s, color 0.3s;
+            background: var(--parchment-dark);
+            color: #111;
+            padding: 20px;
+            font-size: 20px;
+            font-family: 'MedievalSharp', serif;
+            border: 2px solid #5a4030;
+            border-radius: 3px;
+            text-shadow: none;
         }
-        .option-btn:hover:not(:disabled) { background-color: #ddd; }
+        .option-btn:hover:not(:disabled) { 
+            background: #e6d5aa; 
+        }
         .option-btn:disabled { cursor: not-allowed; }
 
         /* Colores de Feedback */
         .option-btn.correct {
-            background-color: #2ecc71 !important; 
+            background: #27ae60 !important; 
             color: white !important;
-            border: 2px solid white;
+            border-color: #000;
+            text-shadow: 1px 1px 2px #000;
         }
         .option-btn.incorrect {
-            background-color: #e74c3c !important; 
+            background: #c0392b !important; 
             color: white !important;
-            border: 2px solid white;
+            border-color: #000;
+            text-shadow: 1px 1px 2px #000;
         }
 
         #feedback-message {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: bold;
-            margin-top: 20px;
+            margin-top: 25px;
             display: none;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         /* Admin Form */
-        .admin-form { text-align: left; max-height: 80vh; overflow-y: auto; }
-        .admin-form label { display: block; margin-top: 10px; font-weight: bold; }
-        .admin-form input, .admin-form select { width: 90%; margin-top: 5px; }
-        .close-btn { background-color: #e74c3c; color: white; }
+        .admin-form { text-align: left; max-height: 85vh; overflow-y: auto; }
+        .admin-form label { display: block; margin-top: 15px; font-weight: bold; color: var(--burgundy); }
+        .admin-form input, .admin-form select { width: 90%; margin-top: 5px; background-color: white; }
+        .close-btn { background: linear-gradient(to bottom, #c0392b, #7a241b); color: white; }
     </style>
 </head>
 <body>
 
     <div id="setup-screen">
-        <h1>JEOPARDY</h1>
+        <h1>MEDIEVAL PARTY</h1>
         <div class="setup-box">
-            <label for="player-count">Número de Equipos:</label><br>
+            <label for="player-count" style="font-size: 22px; color: var(--gold); font-family: 'Cinzel', serif;">Número de Gremios (Equipos):</label><br>
             <select id="player-count" onchange="updateTeamInputs()">
-                <option value="1">1 Equipo</option>
-                <option value="2">2 Equipos</option>
-                <option value="3">3 Equipos</option>
+                <option value="1">1 Gremio</option>
+                <option value="2">2 Gremios</option>
+                <option value="3">3 Gremios</option>
             </select><br>
 
             <div id="team-inputs">
-                <input type="text" id="team-1" placeholder="Nombre del Equipo 1" value="Equipo 1">
-                <input type="text" id="team-2" placeholder="Nombre del Equipo 2" value="Equipo 2" style="display:none;">
-                <input type="text" id="team-3" placeholder="Nombre del Equipo 3" value="Equipo 3" style="display:none;">
+                <input type="text" id="team-1" placeholder="Nombre del Gremio 1" value="Gremio 1">
+                <input type="text" id="team-2" placeholder="Nombre del Gremio 2" value="Gremio 2" style="display:none;">
+                <input type="text" id="team-3" placeholder="Nombre del Gremio 3" value="Gremio 3" style="display:none;">
             </div>
 
-            <button onclick="startGame()" style="margin-top: 20px; font-size: 20px; padding: 10px 30px;">¡Empezar a Jugar!</button>
+            <button onclick="startGame()" style="margin-top: 25px; font-size: 24px; padding: 15px 40px;">¡Que comience la justa!</button>
             
-            <br><br><hr style="border-color: #444;"><br>
+            <br><br><hr style="border-color: var(--dark-gold); margin: 30px 0;"><br>
             
-            <button class="admin-btn" onclick="openAdmin()">⚙️ Editar Preguntas (Admin)</button>
-            <div style="margin-top: 10px;">
-                <button class="export-btn" onclick="exportData()">💾 Descargar Preguntas</button>
+            <button class="admin-btn" onclick="openAdmin()">📜 Editar Pergaminos (Admin)</button>
+            <div style="margin-top: 15px;">
+                <button class="export-btn" onclick="exportData()">💾 Guardar Archivo</button>
                 <button class="import-btn" onclick="document.getElementById('import-file').click()">📂 Cargar Archivo</button>
                 <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importData(event)">
             </div>
-            <p style="font-size: 12px; color: #aaa; margin-top: 10px;">Guarda tus preguntas descargando el archivo y cárgalo en tu próxima partida.</p>
         </div>
     </div>
 
     <div id="game-screen">
         <div class="scoreboard" id="scoreboard"></div>
-        <h2 id="turn-indicator" style="color: var(--jeopardy-yellow); margin-bottom: 20px;"></h2>
+        <h2 id="turn-indicator" style="color: var(--gold); margin-bottom: 25px; text-shadow: 2px 2px 4px #000;"></h2>
         
         <div class="board" id="board"></div>
         
-        <button style="margin-top: 30px;" onclick="location.reload()">Volver al Inicio</button>
+        <button style="margin-top: 40px;" onclick="location.reload()">Volver al Castillo (Inicio)</button>
     </div>
 
     <div id="question-modal" class="modal">
@@ -235,15 +308,15 @@
 
     <div id="admin-modal" class="modal">
         <div class="modal-content admin-form">
-            <h2 style="text-align: center; margin-top: 0; color: white;">Panel de Administración</h2>
+            <h2 style="text-align: center; margin-top: 0;">Sala de Escribanos (Administración)</h2>
             
-            <label>Selecciona la pregunta a editar:</label>
+            <label>Selecciona el pergamino a editar:</label>
             <select id="edit-selector" onchange="loadQuestionForEdit()"></select>
 
             <label>Categoría (Cambiar en la de 100 pts afectará a toda la columna):</label>
             <input type="text" id="edit-category">
 
-            <label>URL de la Imagen (Opcional):</label>
+            <label>URL de la Pintura/Imagen (Opcional):</label>
             <input type="text" id="edit-image" placeholder="https://ejemplo.com/imagen.jpg">
 
             <label>Pregunta:</label>
@@ -266,15 +339,15 @@
                 <option value="3">Opción 4</option>
             </select>
 
-            <div style="text-align: center; margin-top: 20px;">
-                <button onclick="saveQuestionEdit()">Guardar Cambios</button>
+            <div style="text-align: center; margin-top: 30px;">
+                <button onclick="saveQuestionEdit()">Sellar Cambios</button>
                 <button class="close-btn" onclick="closeAdmin()">Cerrar Panel</button>
             </div>
         </div>
     </div>
 
     <script>
-        const defaultCategories = ["Historia", "Ciencia", "Geografía", "Deportes", "Cine"];
+        const defaultCategories = ["Historia", "Alquimia", "Geografía", "Justas", "Leyendas"];
         const pointValues = [100, 200, 300, 400, 500];
         let gameData = [];
         let players = [];
@@ -314,8 +387,9 @@
                         row: row,
                         category: defaultCategories[col],
                         points: pointValues[row],
-                        image: 'https://images.unsplash.com/photo-1606326608606-aa0b62935f2b?w=500&q=80',
-                        question: `Pregunta de ${defaultCategories[col]} por ${pointValues[row]} puntos.`,
+                        // Imagen de castillo por defecto
+                        image: 'https://images.unsplash.com/photo-1542382103-6058eb7db6b3?w=500&q=80',
+                        question: `Acertijo de ${defaultCategories[col]} por ${pointValues[row]} monedas de oro.`,
                         options: ["Respuesta A", "Respuesta B", "Respuesta C", "Respuesta D"],
                         correctIndex: 0,
                         answered: false
@@ -336,7 +410,7 @@
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = "jeopardy_preguntas.json";
+            a.download = "medieval_party_preguntas.json";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -354,12 +428,12 @@
                     if (Array.isArray(importedData) && importedData.length === 25) {
                         gameData = importedData;
                         saveData(); 
-                        alert("¡Archivo cargado correctamente! Las preguntas han sido actualizadas.");
+                        alert("¡Pergaminos restaurados! Las preguntas han sido actualizadas.");
                     } else {
-                        alert("Error: El archivo no tiene el formato correcto del juego.");
+                        alert("Error: El pergamino no tiene la magia correcta (formato inválido).");
                     }
                 } catch (error) {
-                    alert("Error al leer el archivo. Asegúrate de que es un .json válido.");
+                    alert("Error al descifrar el pergamino. Asegúrate de que es un .json válido.");
                 }
                 document.getElementById('import-file').value = ""; 
             };
@@ -374,7 +448,7 @@
             
             for(let i = 0; i < count; i++) {
                 let teamName = document.getElementById(`team-${i+1}`).value.trim();
-                if (teamName === '') teamName = `Equipo ${i+1}`;
+                if (teamName === '') teamName = `Gremio ${i+1}`;
                 players.push({ name: teamName, score: 0 });
             }
             
@@ -421,7 +495,7 @@
             players.forEach((p, index) => {
                 const div = document.createElement('div');
                 div.className = 'player-score' + (index === currentPlayer ? ' active' : '');
-                div.innerHTML = `<strong>${p.name}</strong><br>$${p.score}`;
+                div.innerHTML = `<strong>${p.name}</strong><br>💰 ${p.score}`;
                 sb.appendChild(div);
             });
             document.getElementById('turn-indicator').textContent = `Turno actual: ${players[currentPlayer].name}`;
@@ -468,22 +542,21 @@
 
             if (selectedIndex === parseInt(qData.correctIndex)) {
                 clickedButton.classList.add('correct');
-                feedbackEl.textContent = "Resposta Correcta!";
-                feedbackEl.style.color = "#2ecc71";
+                feedbackEl.textContent = "¡Resposta Correcta!";
+                feedbackEl.style.color = "#27ae60";
                 players[currentPlayer].score += qData.points;
             } else {
                 clickedButton.classList.add('incorrect');
                 allBtns[parseInt(qData.correctIndex)].classList.add('correct');
                 
-                feedbackEl.textContent = "Resposta Incorrecta!";
-                feedbackEl.style.color = "#e74c3c";
+                feedbackEl.textContent = "¡Resposta Incorrecta!";
+                feedbackEl.style.color = "#c0392b";
                 players[currentPlayer].score -= qData.points;
             }
 
             feedbackEl.style.display = 'block';
             qData.answered = true;
 
-            // --- ¡AQUÍ ESTÁ EL CAMBIO A 5 SEGUNDOS (5000 milisegundos)! ---
             setTimeout(() => {
                 document.getElementById('question-modal').style.display = 'none';
                 currentPlayer = (currentPlayer + 1) % players.length;
@@ -547,7 +620,7 @@
             });
 
             saveData();
-            alert("¡Pregunta guardada correctamente!");
+            alert("¡El pergamino ha sido sellado con éxito!");
             openAdmin();
         }
     </script>
