@@ -488,7 +488,6 @@
 <body>
     <div class="game-header">
         <h1> MEDIEVIAL</h1>
-        <div class="subtitle">Buy, Sell &amp; Save Money</div>
     </div>
 
     <div class="score-board">
@@ -507,8 +506,8 @@
     </div>
 
     <div class="controls">
-        <button class="control-btn" onclick="resetGame()">🔄 New Game</button>
-        <button class="control-btn" onclick="resetScores()">📊 Reset Scores</button>
+        <button class="control-btn" onclick="resetGame()">🔄 JOC NOU</button>
+        <button class="control-btn" onclick="resetScores()">📊 RESET </button>
     </div>
 
     <div class="board" id="gameBoard">
@@ -540,7 +539,10 @@
         <div class="cell" data-category="Surprise!" data-value="400">$400</div>
         <div class="cell" data-category="Grammar" data-value="400">$400</div>
         <div class="cell" data-category="Preu Just" data-value="500">$500</div>
-        <div class="cell" data-category="Speaking" data-value="500">$500</div><div class="cell" data-category="Comprehension" data-value="500">$500</div><div class="cell" data-category="Surprise!" data-value="500">$500</div><div class="cell" data-category="Grammar" data-value="500">$500</div></div>
+        <div class="cell" data-category="Speaking" data-value="500">$500</div>
+        <div class="cell" data-category="Comprehension" data-value="500">$500</div>
+        <div class="cell" data-category="Surprise!" data-value="500">$500</div>
+        <div class="cell" data-category="Grammar" data-value="500">$500</div></div>
 
     <div id="questionModal" class="modal" style="display: none;">
         <div class="modal-content">
@@ -554,7 +556,11 @@
                 <div id="passageContainer"></div>
                 <div id="timerContainer"></div>
                 <div id="inputContainer"></div>
-                <div class="choices-container" id="choicesContainer"><button class="choice-btn">A) Sell</button><button class="choice-btn selected correct">B) Buy</button><button class="choice-btn">C) Give</button><button class="choice-btn">D) Take</button></div>
+                <div class="choices-container" id="choicesContainer">
+                    <button class="choice-btn">A) Sell</button>
+                    <button class="choice-btn selected correct">B) Buy</button>
+                    <button class="choice-btn">C) Give</button>
+                    <button class="choice-btn">D) Take</button></div>
             </div>
 
             <div class="result-message correct" id="resultMessage" style="display: block;">✓ CORRECTE! </div>
@@ -930,16 +936,6 @@
             const resultMessage = document.getElementById('resultMessage');
             let isCorrect = false;
 
-            if (currentQuestion.type === 'speaking') {
-                // Teacher manually grades speaking
-                resultMessage.textContent = '🎤 Teacher: Was the answer good?\n\nClick the team that answered to award/deduct points.';
-                resultMessage.className = 'result-message';
-                resultMessage.style.background = 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)';
-                resultMessage.style.display = 'block';
-                document.getElementById('checkBtn').style.display = 'none';
-                document.getElementById('teamSelector').style.display = 'flex';
-                return;
-            }
 
             if (currentQuestion.inputType === 'text') {
                 const userAnswer = document.getElementById('textAnswer').value.trim().toLowerCase();
@@ -956,10 +952,10 @@
                 }
 
                 if (isCorrect) {
-                    resultMessage.textContent = `✓ CORRECT! The answer is: ${currentQuestion.correct}`;
+                    resultMessage.textContent = `✓ CORRECTE!: ${currentQuestion.correct}`;
                     resultMessage.className = 'result-message correct';
                 } else {
-                    resultMessage.textContent = `✗ Not quite. The correct answer is: ${currentQuestion.correct}`;
+                    resultMessage.textContent = `✗ LA RESPOSTA CORRECTE ES: ${currentQuestion.correct}`;
                     resultMessage.className = 'result-message incorrect';
                 }
             } else {
@@ -976,12 +972,11 @@
                     }
                 });
 
-                if (isCorrect) {
-                    resultMessage.textContent = '✓ CORRECT! Great shopping skills! 🛒';
+                 if (isCorrect) {
+                    resultMessage.textContent = `✓ CORRECTE!: ${currentQuestion.correct}`;
                     resultMessage.className = 'result-message correct';
                 } else {
-                    const correctLetter = String.fromCharCode(65 + currentCorrect);
-                    resultMessage.textContent = `✗ Not quite. The correct answer was ${correctLetter}.`;
+                    resultMessage.textContent = `✗ LA RESPOSTA CORRECTE ES: ${currentQuestion.correct}`;
                     resultMessage.className = 'result-message incorrect';
                 }
             }
@@ -1045,7 +1040,7 @@
         }
 
         function resetGame() {
-            if (confirm('Start a new game? This will reset the board and all scores.')) {
+            if (confirm('NOU JOC?')) {
                 scores = [0, 0, 0];
                 updateScores();
                 initBoard();
@@ -1054,7 +1049,7 @@
         }
 
         function resetScores() {
-            if (confirm('Reset all scores to zero?')) {
+            if (confirm('RESETEJAR PUNTUACIÓ')) {
                 scores = [0, 0, 0];
                 updateScores();
             }
