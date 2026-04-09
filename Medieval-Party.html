@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medieval Party</title>
+    <title>Festa Medieval</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -146,7 +146,7 @@
             text-shadow: none;
         }
 
-        /* Scoreboard & Jokers Integrados */
+        /* Scoreboard & Jokers Integrats */
         .scoreboard {
             display: flex;
             justify-content: center;
@@ -217,7 +217,7 @@
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
         
-        /* IMAGEN CENTRADA */
+        /* IMATGE CENTRADA */
         .modal-content img {
             display: block;
             margin: 0 auto 20px auto; 
@@ -250,7 +250,7 @@
         }
         .option-btn:disabled { cursor: not-allowed; }
 
-        /* Colores de Feedback */
+        /* Colors de Feedback */
         .option-btn.correct {
             background: #27ae60 !important; 
             color: white !important;
@@ -283,29 +283,29 @@
 <body>
 
     <div id="setup-screen">
-        <h1>MEDIEVAL PARTY</h1>
+        <h1>FESTA MEDIEVAL</h1>
         <div class="setup-box">
-            <label for="player-count" style="font-size: 22px; color: var(--gold); font-family: 'Cinzel', serif;">Número de Gremios (Equipos):</label><br>
+            <label for="player-count" style="font-size: 22px; color: var(--gold); font-family: 'Cinzel', serif;">Nombre de Gremis (Equips):</label><br>
             <select id="player-count" onchange="updateTeamInputs()">
-                <option value="1">1 Gremio</option>
-                <option value="2">2 Gremios</option>
-                <option value="3">3 Gremios</option>
+                <option value="1">1 Gremi</option>
+                <option value="2">2 Gremis</option>
+                <option value="3">3 Gremis</option>
             </select><br>
 
             <div id="team-inputs">
-                <input type="text" id="team-1" placeholder="Nombre del Gremio 1" value="Gremio 1">
-                <input type="text" id="team-2" placeholder="Nombre del Gremio 2" value="Gremio 2" style="display:none;">
-                <input type="text" id="team-3" placeholder="Nombre del Gremio 3" value="Gremio 3" style="display:none;">
+                <input type="text" id="team-1" placeholder="Nom del Gremi 1" value="Gremi 1">
+                <input type="text" id="team-2" placeholder="Nom del Gremi 2" value="Gremi 2" style="display:none;">
+                <input type="text" id="team-3" placeholder="Nom del Gremi 3" value="Gremi 3" style="display:none;">
             </div>
 
-            <button onclick="startGame()" style="margin-top: 25px; font-size: 24px; padding: 15px 40px;">¡Que comience la justa!</button>
+            <button onclick="startGame()" style="margin-top: 25px; font-size: 24px; padding: 15px 40px;">Que comenci la justa!</button>
             
             <br><br><hr style="border-color: var(--dark-gold); margin: 30px 0;"><br>
             
-            <button class="admin-btn" onclick="openAdmin()">📜 Editar Pergaminos (Admin)</button>
+            <button class="admin-btn" onclick="openAdmin()">📜 Editar Pergamins (Admin)</button>
             <div style="margin-top: 15px;">
-                <button class="export-btn" onclick="exportData()">💾 Guardar Archivo</button>
-                <button class="import-btn" onclick="document.getElementById('import-file').click()">📂 Cargar Archivo</button>
+                <button class="export-btn" onclick="exportData()">💾 Desar Fitxer</button>
+                <button class="import-btn" onclick="document.getElementById('import-file').click()">📂 Carregar Fitxer</button>
                 <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importData(event)">
             </div>
         </div>
@@ -317,13 +317,13 @@
         
         <div class="board" id="board"></div>
         
-        <button style="margin-top: 40px;" onclick="location.reload()">Volver al Castillo (Inicio)</button>
+        <button style="margin-top: 40px;" onclick="location.reload()">Tornar al Castell (Inici)</button>
     </div>
 
     <div id="question-modal" class="modal">
         <div class="modal-content">
             <h3 id="answering-indicator" style="color: var(--burgundy); border-bottom: 2px solid var(--dark-gold); padding-bottom: 10px; margin-top: 0; display: none;"></h3>
-            <img id="q-image" src="" alt="Imagen de pregunta" onerror="this.style.display='none'">
+            <img id="q-image" src="" alt="Imatge de pregunta" onerror="this.style.display='none'">
             <h2 id="q-text">Pregunta...</h2>
             
             <div id="action-area">
@@ -336,47 +336,47 @@
 
     <div id="target-modal" class="modal" style="z-index: 1100;">
         <div class="modal-content" style="max-width: 450px; text-align: center;">
-            <h2 id="target-title" style="color: var(--burgundy);">¿A qué Gremio deseas aplicar tu ataque?</h2>
+            <h2 id="target-title" style="color: var(--burgundy);">A quin Gremi vols aplicar el teu atac?</h2>
             <div id="target-options" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-top: 25px;"></div>
-            <button id="cancel-target-btn" class="close-btn" style="margin-top: 30px;" onclick="cancelTarget()">Cancelar Comodín</button>
+            <button id="cancel-target-btn" class="close-btn" style="margin-top: 30px;" onclick="cancelTarget()">Cancel·lar Comodí</button>
         </div>
     </div>
 
     <div id="admin-modal" class="modal">
         <div class="modal-content admin-form">
-            <h2 style="text-align: center; margin-top: 0;">Sala de Escribanos (Administración)</h2>
-            <label>Selecciona el pergamino a editar:</label>
+            <h2 style="text-align: center; margin-top: 0;">Sala d'Escribes (Administració)</h2>
+            <label>Selecciona el pergamí a editar:</label>
             <select id="edit-selector" onchange="loadQuestionForEdit()"></select>
-            <label>Categoría:</label><input type="text" id="edit-category">
+            <label>Categoria:</label><input type="text" id="edit-category">
             
-            <label>URL o Archivo Local de la Pintura/Imagen:</label>
+            <label>URL o Fitxer Local de la Pintura/Imatge:</label>
             <div style="display: flex; gap: 10px; align-items: center;">
-                <input type="text" id="edit-image" placeholder="Pega una URL o sube un archivo local..." style="flex-grow: 1;">
-                <button type="button" onclick="document.getElementById('edit-image-file').click()" style="margin: 0; padding: 10px 15px; font-size: 14px; white-space: nowrap;">📁 Subir Local</button>
+                <input type="text" id="edit-image" placeholder="Enganxa una URL o puja un fitxer local..." style="flex-grow: 1;">
+                <button type="button" onclick="document.getElementById('edit-image-file').click()" style="margin: 0; padding: 10px 15px; font-size: 14px; white-space: nowrap;">📁 Pujar Local</button>
                 <input type="file" id="edit-image-file" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
             </div>
             
             <label>Pregunta:</label><input type="text" id="edit-question">
-            <label>Opción 1:</label><input type="text" id="edit-opt0">
-            <label>Opción 2:</label><input type="text" id="edit-opt1">
-            <label>Opción 3:</label><input type="text" id="edit-opt2">
-            <label>Opción 4:</label><input type="text" id="edit-opt3">
-            <label>Respuesta Correcta:</label>
+            <label>Opció 1:</label><input type="text" id="edit-opt0">
+            <label>Opció 2:</label><input type="text" id="edit-opt1">
+            <label>Opció 3:</label><input type="text" id="edit-opt2">
+            <label>Opció 4:</label><input type="text" id="edit-opt3">
+            <label>Resposta Correcta:</label>
             <select id="edit-correct">
-                <option value="0">Opción 1</option>
-                <option value="1">Opción 2</option>
-                <option value="2">Opción 3</option>
-                <option value="3">Opción 4</option>
+                <option value="0">Opció 1</option>
+                <option value="1">Opció 2</option>
+                <option value="2">Opció 3</option>
+                <option value="3">Opció 4</option>
             </select>
             <div style="text-align: center; margin-top: 30px;">
-                <button onclick="saveQuestionEdit()">Sellar Cambios</button>
-                <button class="close-btn" onclick="closeAdmin()">Cerrar Panel</button>
+                <button onclick="saveQuestionEdit()">Segellar Canvis</button>
+                <button class="close-btn" onclick="closeAdmin()">Tancar Panell</button>
             </div>
         </div>
     </div>
 
     <script>
-        const defaultCategories = ["Historia", "Alquimia", "Geografía", "Justas", "Leyendas"];
+        const defaultCategories = ["Història", "Alquímia", "Geografia", "Justes", "Llegendes"];
         const pointValues = [100, 200, 300, 400, 500];
         let gameData = [];
         let players = [];
@@ -414,8 +414,8 @@
                         category: defaultCategories[col],
                         points: pointValues[row],
                         image: 'https://images.unsplash.com/photo-1542382103-6058eb7db6b3?w=500&q=80',
-                        question: `Acertijo de ${defaultCategories[col]} por ${pointValues[row]} monedas de oro.`,
-                        options: ["Respuesta A", "Respuesta B", "Respuesta C", "Respuesta D"],
+                        question: `Enigma de ${defaultCategories[col]} per ${pointValues[row]} monedes d'or.`,
+                        options: ["Resposta A", "Resposta B", "Resposta C", "Resposta D"],
                         correctIndex: 0,
                         answered: false
                     });
@@ -432,7 +432,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = "medieval_party_preguntas.json";
+            a.download = "festa_medieval_preguntes.json";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -449,9 +449,9 @@
                     if (Array.isArray(importedData) && importedData.length === 25) {
                         gameData = importedData;
                         saveData(); 
-                        alert("¡Pergaminos restaurados! Las preguntas han sido actualizadas.");
-                    } else alert("Error: El pergamino no tiene la magia correcta.");
-                } catch (error) { alert("Error al descifrar el pergamino."); }
+                        alert("Pergamins restaurats! Les preguntes s'han actualitzat.");
+                    } else alert("Error: El pergamí no té la màgia correcta.");
+                } catch (error) { alert("Error en desxifrar el pergamí."); }
                 document.getElementById('import-file').value = ""; 
             };
             reader.readAsText(file);
@@ -463,7 +463,7 @@
             
             for(let i = 0; i < count; i++) {
                 let teamName = document.getElementById(`team-${i+1}`).value.trim();
-                if (teamName === '') teamName = `Gremio ${i+1}`;
+                if (teamName === '') teamName = `Gremi ${i+1}`;
                 players.push({ 
                     name: teamName, 
                     score: 0,
@@ -552,17 +552,17 @@
                 jokersDiv.appendChild(createJokerBtn('double', '⚔️', 'x2', '#27ae60'));
                 
                 if (players.length > 1) {
-                    jokersDiv.appendChild(createJokerBtn('attack', '🏹', 'Atq', '#c0392b'));
-                    jokersDiv.appendChild(createJokerBtn('pass', '🛡️', 'Ceder', '#f39c12'));
+                    jokersDiv.appendChild(createJokerBtn('attack', '🏹', 'Atc', '#c0392b'));
+                    jokersDiv.appendChild(createJokerBtn('pass', '🛡️', 'Cedir', '#f39c12'));
                 }
 
                 div.appendChild(jokersDiv);
                 sb.appendChild(div);
             });
-            document.getElementById('turn-indicator').textContent = `Turno actual: ${players[currentPlayer].name}`;
+            document.getElementById('turn-indicator').textContent = `Torn actual: ${players[currentPlayer].name}`;
         }
 
-        // --- LÓGICA DE COMODINES ---
+        // --- LÒGICA DE COMODINS ---
         function activateJoker(type) {
             const p = players[currentPlayer];
             
@@ -593,7 +593,7 @@
             const options = document.getElementById('target-options');
             options.innerHTML = '';
             
-            document.getElementById('target-title').textContent = "¿A qué Gremio deseas aplicar tu ataque?";
+            document.getElementById('target-title').textContent = "A quin Gremi vols aplicar el teu atac?";
 
             players.forEach((p, index) => {
                 if (index !== currentPlayer) {
@@ -623,7 +623,7 @@
             updateScoreboard();
         }
 
-        // --- APERTURA Y COMPROBACIÓN DE PREGUNTA ---
+        // --- OBERTURA I COMPROVACIÓ DE PREGUNTA ---
         function openQuestion(id) {
             currentQuestionId = id;
             const qData = gameData.find(q => q.id === id);
@@ -663,7 +663,7 @@
                 
                 const targetDiv = document.createElement('div');
                 targetDiv.id = 'pass-target-container';
-                targetDiv.innerHTML = '<h3 style="color: var(--burgundy); font-size: 24px; margin-top: 30px;">Has usado el comodín de Ceder Turno.<br>Lee el pergamino y elige a qué gremio se lo lanzas:</h3>';
+                targetDiv.innerHTML = '<h3 style="color: var(--burgundy); font-size: 24px; margin-top: 30px;">Has utilitzat el comodí de Cedir Torn.<br>Llegeix el pergamí i tria a quin gremi l\'hi llances:</h3>';
                 
                 const btnContainer = document.createElement('div');
                 btnContainer.style.display = 'flex';
@@ -682,7 +682,7 @@
                             targetDiv.remove(); 
                             optionsContainer.style.display = 'grid'; 
                             
-                            indicatorEl.textContent = `¡La patata caliente ha sido lanzada! Responde: ${players[index].name}`;
+                            indicatorEl.textContent = `La patata calenta ha estat llançada! Respon: ${players[index].name}`;
                             indicatorEl.style.display = 'block';
                         };
                         btnContainer.appendChild(btn);
@@ -694,7 +694,7 @@
                 
             } else {
                 optionsContainer.style.display = 'grid';
-                indicatorEl.textContent = `¡El destino aguarda! Responde: ${players[currentPlayer].name}`;
+                indicatorEl.textContent = `El destí t'espera! Respon: ${players[currentPlayer].name}`;
                 indicatorEl.style.display = 'block';
             }
 
@@ -717,29 +717,29 @@
 
             if (isCorrect) {
                 clickedButton.classList.add('correct');
-                feedbackEl.textContent = "¡Resposta Correcta!";
+                feedbackEl.textContent = "Resposta Correcta!";
                 feedbackEl.style.color = "#27ae60";
                 
                 players[answeringPlayer].score += points;
 
                 if (activeJoker && activeJoker.type === 'attack') {
                     players[activeJoker.target].score -= qData.points; 
-                    feedbackEl.textContent += ` ¡Y restas ${qData.points} a ${players[activeJoker.target].name}!`;
+                    feedbackEl.textContent += ` I restes ${qData.points} a ${players[activeJoker.target].name}!`;
                 }
             } else {
                 clickedButton.classList.add('incorrect');
                 allBtns[parseInt(qData.correctIndex)].classList.add('correct');
                 
-                feedbackEl.textContent = "¡Resposta Incorrecta!";
+                feedbackEl.textContent = "Resposta Incorrecta!";
                 feedbackEl.style.color = "#c0392b";
                 
                 players[answeringPlayer].score -= points;
             }
 
             if (activeJoker && activeJoker.type === 'double') {
-                feedbackEl.textContent += ` (¡X2 Aplicado!)`;
+                feedbackEl.textContent += ` (X2 Aplicat!)`;
             } else if (activeJoker && activeJoker.type === 'pass') {
-                feedbackEl.textContent += ` (${players[answeringPlayer].name} asume el castigo/premio)`;
+                feedbackEl.textContent += ` (${players[answeringPlayer].name} assumeix el càstig/premi)`;
             }
 
             feedbackEl.style.display = 'block';
@@ -782,7 +782,7 @@
             document.getElementById('edit-correct').value = qData.correctIndex;
         }
 
-        // --- SUBIR IMAGEN LOCAL Y CONVERTIR A BASE64 ---
+        // --- PUJAR IMATGE LOCAL I CONVERTIR A BASE64 ---
         function handleImageUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -790,7 +790,6 @@
             reader.onload = function(e) {
                 const img = new Image();
                 img.onload = function() {
-                    // Comprimir la imagen para que el archivo JSON no pese demasiado
                     const canvas = document.createElement('canvas');
                     const MAX_WIDTH = 600;
                     const MAX_HEIGHT = 450;
@@ -813,7 +812,6 @@
                     const ctx = canvas.getContext('2d');
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Convertir a base64 comprimido
                     const dataUrl = canvas.toDataURL('image/jpeg', 0.7); 
                     document.getElementById('edit-image').value = dataUrl;
                 }
@@ -838,7 +836,7 @@
             const newCategoryName = qData.category;
             gameData.forEach(q => { if(q.col === qData.col) q.category = newCategoryName; });
             saveData();
-            alert("¡El pergamino ha sido sellado con éxito!");
+            alert("El pergamí ha estat segellat amb èxit!");
             openAdmin();
         }
     </script>
