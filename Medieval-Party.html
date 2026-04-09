@@ -330,7 +330,6 @@
         }
 
         function exportData() {
-            // Convertir datos a JSON y crear archivo descargable
             const dataStr = JSON.stringify(gameData, null, 2);
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
@@ -352,10 +351,9 @@
             reader.onload = function(e) {
                 try {
                     const importedData = JSON.parse(e.target.result);
-                    // Verificación básica para asegurar que es nuestro archivo
                     if (Array.isArray(importedData) && importedData.length === 25) {
                         gameData = importedData;
-                        saveData(); // Guarda en localStorage
+                        saveData(); 
                         alert("¡Archivo cargado correctamente! Las preguntas han sido actualizadas.");
                     } else {
                         alert("Error: El archivo no tiene el formato correcto del juego.");
@@ -363,7 +361,6 @@
                 } catch (error) {
                     alert("Error al leer el archivo. Asegúrate de que es un .json válido.");
                 }
-                // Limpiar el input para permitir cargar el mismo archivo otra vez si se desea
                 document.getElementById('import-file').value = ""; 
             };
             reader.readAsText(file);
@@ -375,7 +372,6 @@
             const count = parseInt(document.getElementById('player-count').value);
             players = [];
             
-            // Recoger los nombres de los equipos
             for(let i = 0; i < count; i++) {
                 let teamName = document.getElementById(`team-${i+1}`).value.trim();
                 if (teamName === '') teamName = `Equipo ${i+1}`;
@@ -435,7 +431,6 @@
             currentQuestionId = id;
             const qData = gameData.find(q => q.id === id);
             
-            // Limpiar modal anterior
             const feedbackEl = document.getElementById('feedback-message');
             feedbackEl.style.display = 'none';
             feedbackEl.textContent = '';
@@ -469,7 +464,6 @@
             const feedbackEl = document.getElementById('feedback-message');
             const allBtns = document.querySelectorAll('.option-btn');
             
-            // Deshabilitar botones para no permitir doble clic
             allBtns.forEach(btn => btn.disabled = true);
 
             if (selectedIndex === parseInt(qData.correctIndex)) {
@@ -479,7 +473,6 @@
                 players[currentPlayer].score += qData.points;
             } else {
                 clickedButton.classList.add('incorrect');
-                // Opcional: Mostrar también la correcta en verde
                 allBtns[parseInt(qData.correctIndex)].classList.add('correct');
                 
                 feedbackEl.textContent = "Resposta Incorrecta!";
@@ -490,13 +483,13 @@
             feedbackEl.style.display = 'block';
             qData.answered = true;
 
-            // Esperar 2 segundos antes de cerrar el modal y pasar turno
+            // --- ¡AQUÍ ESTÁ EL CAMBIO A 5 SEGUNDOS (5000 milisegundos)! ---
             setTimeout(() => {
                 document.getElementById('question-modal').style.display = 'none';
                 currentPlayer = (currentPlayer + 1) % players.length;
                 renderBoard();
                 updateScoreboard();
-            }, 2000);
+            }, 5000); 
         }
 
         // --- Lógica del Administrador ---
