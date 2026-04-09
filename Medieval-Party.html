@@ -11,15 +11,14 @@
 
     <style>
         :root {
-            /* Paleta de colores Medieval */
-            --bg-dark: #1a110b;          /* Oscuro, fondo de castillo */
-            --bg-gradient: #2c1e16;      /* Madera oscura */
-            --gold: #d4af37;             /* Oro envejecido */
+            --bg-dark: #1a110b;          
+            --bg-gradient: #2c1e16;      
+            --gold: #d4af37;             
             --dark-gold: #997a00;
-            --burgundy: #58181f;         /* Rojo Borgoña */
-            --parchment: #f1e4c3;        /* Pergamino claro */
-            --parchment-dark: #d5c39a;   /* Pergamino oscuro */
-            --stone: #3a3b3c;            /* Piedra (preguntas usadas) */
+            --burgundy: #58181f;         
+            --parchment: #f1e4c3;        
+            --parchment-dark: #d5c39a;   
+            --stone: #3a3b3c;            
             --text-light: #f5f0e6;
         }
 
@@ -34,7 +33,7 @@
             min-height: 100vh;
         }
 
-        h1, h2, .category-header, button {
+        h1, h2, h3, .category-header, button {
             font-family: 'Cinzel', serif;
         }
 
@@ -84,8 +83,9 @@
             transition: transform 0.1s, filter 0.3s;
             text-shadow: 1px 1px 0px rgba(255,255,255,0.3);
         }
-        button:active { transform: scale(0.95); }
+        button:active:not(:disabled) { transform: scale(0.95); }
         button:hover:not(:disabled) { filter: brightness(1.2); }
+        button:disabled { filter: grayscale(1); opacity: 0.5; cursor: not-allowed; }
         
         .admin-btn { background: linear-gradient(to bottom, #4a6fa5, #2b456b); color: var(--parchment); }
         .export-btn { background: linear-gradient(to bottom, #3b7a57, #1f4731); color: var(--parchment); }
@@ -131,7 +131,6 @@
             transition: transform 0.1s, border-color 0.3s;
             box-shadow: inset 0 0 15px rgba(0,0,0,0.8), 3px 3px 6px rgba(0,0,0,0.5);
             text-shadow: 2px 2px 3px black;
-            font-family: 'Cinzel', serif;
         }
         .card:hover { 
             transform: scale(1.05); 
@@ -147,12 +146,12 @@
             text-shadow: none;
         }
 
-        /* Scoreboard (Arriba) */
+        /* Scoreboard & Jokers */
         .scoreboard {
             display: flex;
             justify-content: center;
             gap: 25px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
         }
         .player-score {
             background-color: rgba(0,0,0,0.6);
@@ -162,11 +161,21 @@
             border: 2px solid var(--gold);
             color: var(--parchment);
             box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            min-width: 150px;
         }
         .player-score.active { 
             background-color: var(--burgundy); 
             border-color: #ffdf70;
             box-shadow: 0 0 15px var(--gold);
+        }
+        
+        #jokers-container {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 5px;
+            display: inline-block;
+            border: 1px solid var(--dark-gold);
         }
 
         /* Modals (Question & Admin) */
@@ -189,10 +198,11 @@
             width: 90%;
             border: 6px solid var(--dark-gold);
             box-shadow: 0 0 30px #000, inset 0 0 50px rgba(139, 69, 19, 0.3);
+            position: relative;
         }
         .modal-content h2 {
             font-size: 32px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             color: var(--burgundy);
             text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
         }
@@ -241,11 +251,10 @@
         }
 
         #feedback-message {
-            font-size: 32px;
+            font-size: 30px;
             font-weight: bold;
             margin-top: 25px;
             display: none;
-            font-family: 'Cinzel', serif;
             text-transform: uppercase;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
@@ -289,8 +298,10 @@
     </div>
 
     <div id="game-screen">
+        <h2 id="turn-indicator" style="color: var(--gold); margin-top: 0; margin-bottom: 10px; text-shadow: 2px 2px 4px #000;"></h2>
         <div class="scoreboard" id="scoreboard"></div>
-        <h2 id="turn-indicator" style="color: var(--gold); margin-bottom: 25px; text-shadow: 2px 2px 4px #000;"></h2>
+        
+        <div id="jokers-container"></div>
         
         <div class="board" id="board"></div>
         
@@ -299,10 +310,19 @@
 
     <div id="question-modal" class="modal">
         <div class="modal-content">
+            <h3 id="answering-indicator" style="color: var(--burgundy); border-bottom: 2px solid var(--dark-gold); padding-bottom: 10px; margin-top: 0; display: none;"></h3>
             <img id="q-image" src="" alt="Imagen de pregunta" onerror="this.style.display='none'">
             <h2 id="q-text">Pregunta...</h2>
             <div class="options-grid" id="q-options"></div>
             <div id="feedback-message"></div>
+        </div>
+    </div>
+
+    <div id="target-modal" class="modal">
+        <div class="modal-content" style="max-width: 450px; text-align: center;">
+            <h2 style="color: var(--burgundy);">¿A qué Gremio deseas aplicar tu poder?</h2>
+            <div id="target-options" style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;"></div>
+            <button class="close-btn" style="margin-top: 30px;" onclick="document.getElementById('target-modal').style.display='none'">Cancelar Comodín</button>
         </div>
     </div>
 
@@ -312,25 +332,16 @@
             
             <label>Selecciona el pergamino a editar:</label>
             <select id="edit-selector" onchange="loadQuestionForEdit()"></select>
-
-            <label>Categoría (Cambiar en la de 100 pts afectará a toda la columna):</label>
+            <label>Categoría:</label>
             <input type="text" id="edit-category">
-
             <label>URL de la Pintura/Imagen (Opcional):</label>
-            <input type="text" id="edit-image" placeholder="https://ejemplo.com/imagen.jpg">
-
+            <input type="text" id="edit-image">
             <label>Pregunta:</label>
             <input type="text" id="edit-question">
-
-            <label>Opción 1:</label>
-            <input type="text" id="edit-opt0">
-            <label>Opción 2:</label>
-            <input type="text" id="edit-opt1">
-            <label>Opción 3:</label>
-            <input type="text" id="edit-opt2">
-            <label>Opción 4:</label>
-            <input type="text" id="edit-opt3">
-
+            <label>Opción 1:</label><input type="text" id="edit-opt0">
+            <label>Opción 2:</label><input type="text" id="edit-opt1">
+            <label>Opción 3:</label><input type="text" id="edit-opt2">
+            <label>Opción 4:</label><input type="text" id="edit-opt3">
             <label>Respuesta Correcta:</label>
             <select id="edit-correct">
                 <option value="0">Opción 1</option>
@@ -338,7 +349,6 @@
                 <option value="2">Opción 3</option>
                 <option value="3">Opción 4</option>
             </select>
-
             <div style="text-align: center; margin-top: 30px;">
                 <button onclick="saveQuestionEdit()">Sellar Cambios</button>
                 <button class="close-btn" onclick="closeAdmin()">Cerrar Panel</button>
@@ -353,6 +363,8 @@
         let players = [];
         let currentPlayer = 0;
         let currentQuestionId = null;
+        let activeJoker = null; // { type: 'double'|'attack'|'pass', target: playerIndex }
+        let pendingJokerType = null;
 
         window.onload = () => {
             initData();
@@ -365,8 +377,6 @@
             document.getElementById('team-2').style.display = count >= 2 ? 'block' : 'none';
             document.getElementById('team-3').style.display = count >= 3 ? 'block' : 'none';
         }
-
-        // --- Manejo de Datos (Local, Exportar e Importar) ---
 
         function initData() {
             const savedData = localStorage.getItem('jeopardyData');
@@ -387,7 +397,6 @@
                         row: row,
                         category: defaultCategories[col],
                         points: pointValues[row],
-                        // Imagen de castillo por defecto
                         image: 'https://images.unsplash.com/photo-1542382103-6058eb7db6b3?w=500&q=80',
                         question: `Acertijo de ${defaultCategories[col]} por ${pointValues[row]} monedas de oro.`,
                         options: ["Respuesta A", "Respuesta B", "Respuesta C", "Respuesta D"],
@@ -399,15 +408,12 @@
             saveData();
         }
 
-        function saveData() {
-            localStorage.setItem('jeopardyData', JSON.stringify(gameData));
-        }
+        function saveData() { localStorage.setItem('jeopardyData', JSON.stringify(gameData)); }
 
         function exportData() {
             const dataStr = JSON.stringify(gameData, null, 2);
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
-            
             const a = document.createElement('a');
             a.href = url;
             a.download = "medieval_party_preguntas.json";
@@ -420,7 +426,6 @@
         function importData(event) {
             const file = event.target.files[0];
             if (!file) return;
-
             const reader = new FileReader();
             reader.onload = function(e) {
                 try {
@@ -429,18 +434,12 @@
                         gameData = importedData;
                         saveData(); 
                         alert("¡Pergaminos restaurados! Las preguntas han sido actualizadas.");
-                    } else {
-                        alert("Error: El pergamino no tiene la magia correcta (formato inválido).");
-                    }
-                } catch (error) {
-                    alert("Error al descifrar el pergamino. Asegúrate de que es un .json válido.");
-                }
+                    } else alert("Error: El pergamino no tiene la magia correcta (formato inválido).");
+                } catch (error) { alert("Error al descifrar el pergamino."); }
                 document.getElementById('import-file').value = ""; 
             };
             reader.readAsText(file);
         }
-
-        // --- Lógica del Juego ---
 
         function startGame() {
             const count = parseInt(document.getElementById('player-count').value);
@@ -449,10 +448,15 @@
             for(let i = 0; i < count; i++) {
                 let teamName = document.getElementById(`team-${i+1}`).value.trim();
                 if (teamName === '') teamName = `Gremio ${i+1}`;
-                players.push({ name: teamName, score: 0 });
+                players.push({ 
+                    name: teamName, 
+                    score: 0,
+                    jokers: { double: true, attack: true, pass: true } // Inicializar comodines
+                });
             }
             
             currentPlayer = 0;
+            activeJoker = null;
             gameData.forEach(q => q.answered = false);
             
             document.getElementById('setup-screen').style.display = 'none';
@@ -465,7 +469,6 @@
         function renderBoard() {
             const board = document.getElementById('board');
             board.innerHTML = '';
-
             for (let col = 0; col < 5; col++) {
                 const headerObj = gameData.find(q => q.col === col && q.row === 0);
                 const div = document.createElement('div');
@@ -473,20 +476,17 @@
                 div.textContent = headerObj.category;
                 board.appendChild(div);
             }
-
             for (let row = 0; row < 5; row++) {
                 for (let col = 0; col < 5; col++) {
                     const qData = gameData.find(q => q.col === col && q.row === row);
                     const div = document.createElement('div');
                     div.className = 'card' + (qData.answered ? ' disabled' : '');
                     div.textContent = qData.answered ? '' : qData.points;
-                    
-                    if (!qData.answered) {
-                        div.onclick = () => openQuestion(qData.id);
-                    }
+                    if (!qData.answered) div.onclick = () => openQuestion(qData.id);
                     board.appendChild(div);
                 }
             }
+            renderJokers();
         }
 
         function updateScoreboard() {
@@ -499,8 +499,77 @@
                 sb.appendChild(div);
             });
             document.getElementById('turn-indicator').textContent = `Turno actual: ${players[currentPlayer].name}`;
+            renderJokers();
         }
 
+        // --- SISTEMA DE COMODINES ---
+        function renderJokers() {
+            const container = document.getElementById('jokers-container');
+            container.innerHTML = `<span style="color: var(--gold); font-family: 'Cinzel', serif; font-size: 18px; margin-right: 15px;">Comodines Disponibles:</span>`;
+            
+            const p = players[currentPlayer];
+            const isAnyActive = activeJoker !== null;
+
+            // Botón x2
+            const btnDouble = document.createElement('button');
+            btnDouble.textContent = "⚔️ x2 Puntos";
+            btnDouble.disabled = !p.jokers.double || (isAnyActive && activeJoker.type !== 'double');
+            if(activeJoker && activeJoker.type === 'double') btnDouble.style.boxShadow = "0 0 20px #27ae60";
+            btnDouble.onclick = () => activateJoker('double');
+            container.appendChild(btnDouble);
+
+            // Botones de Ataque y Ceder (solo si hay más de 1 jugador)
+            if (players.length > 1) {
+                const btnAttack = document.createElement('button');
+                btnAttack.textContent = "🏹 Ataque";
+                btnAttack.disabled = !p.jokers.attack || (isAnyActive && activeJoker.type !== 'attack');
+                if(activeJoker && activeJoker.type === 'attack') btnAttack.style.boxShadow = "0 0 20px #c0392b";
+                btnAttack.onclick = () => activateJoker('attack');
+                container.appendChild(btnAttack);
+
+                const btnPass = document.createElement('button');
+                btnPass.textContent = "🛡️ Ceder Turno";
+                btnPass.disabled = !p.jokers.pass || (isAnyActive && activeJoker.type !== 'pass');
+                if(activeJoker && activeJoker.type === 'pass') btnPass.style.boxShadow = "0 0 20px #f39c12";
+                btnPass.onclick = () => activateJoker('pass');
+                container.appendChild(btnPass);
+            }
+        }
+
+        function activateJoker(type) {
+            if (type === 'double') {
+                activeJoker = { type: 'double', target: null };
+                players[currentPlayer].jokers.double = false;
+                renderJokers();
+            } else {
+                pendingJokerType = type;
+                showTargetModal();
+            }
+        }
+
+        function showTargetModal() {
+            const options = document.getElementById('target-options');
+            options.innerHTML = '';
+            players.forEach((p, index) => {
+                if (index !== currentPlayer) {
+                    const btn = document.createElement('button');
+                    btn.textContent = p.name;
+                    btn.onclick = () => selectTarget(index);
+                    options.appendChild(btn);
+                }
+            });
+            document.getElementById('target-modal').style.display = 'flex';
+        }
+
+        function selectTarget(targetIndex) {
+            activeJoker = { type: pendingJokerType, target: targetIndex };
+            if (pendingJokerType === 'attack') players[currentPlayer].jokers.attack = false;
+            if (pendingJokerType === 'pass') players[currentPlayer].jokers.pass = false;
+            document.getElementById('target-modal').style.display = 'none';
+            renderJokers();
+        }
+
+        // --- APERTURA Y COMPROBACIÓN DE PREGUNTA ---
         function openQuestion(id) {
             currentQuestionId = id;
             const qData = gameData.find(q => q.id === id);
@@ -516,6 +585,14 @@
             } else {
                 imgEl.style.display = 'none';
             }
+
+            // Indicador de quién responde (útil si se usa comodín Ceder)
+            const indicatorEl = document.getElementById('answering-indicator');
+            let answeringPlayer = currentPlayer;
+            if (activeJoker && activeJoker.type === 'pass') answeringPlayer = activeJoker.target;
+            
+            indicatorEl.textContent = `¡El destino aguarda! Responde: ${players[answeringPlayer].name}`;
+            indicatorEl.style.display = 'block';
 
             document.getElementById('q-text').textContent = qData.question;
             
@@ -540,22 +617,52 @@
             
             allBtns.forEach(btn => btn.disabled = true);
 
-            if (selectedIndex === parseInt(qData.correctIndex)) {
+            let isCorrect = (selectedIndex === parseInt(qData.correctIndex));
+            let points = qData.points;
+            let answeringPlayer = currentPlayer;
+
+            // Determinar si aplica el comodín Ceder
+            if (activeJoker && activeJoker.type === 'pass') {
+                answeringPlayer = activeJoker.target;
+            }
+
+            // Determinar si aplica el multiplicador x2
+            if (activeJoker && activeJoker.type === 'double') {
+                points *= 2;
+            }
+
+            if (isCorrect) {
                 clickedButton.classList.add('correct');
                 feedbackEl.textContent = "¡Resposta Correcta!";
                 feedbackEl.style.color = "#27ae60";
-                players[currentPlayer].score += qData.points;
+                
+                players[answeringPlayer].score += points;
+
+                // Si acierta y hay Ataque, restar al objetivo
+                if (activeJoker && activeJoker.type === 'attack') {
+                    players[activeJoker.target].score -= qData.points; // Resta puntuación normal
+                    feedbackEl.textContent += ` ¡Y restas ${qData.points} a ${players[activeJoker.target].name}!`;
+                }
             } else {
                 clickedButton.classList.add('incorrect');
                 allBtns[parseInt(qData.correctIndex)].classList.add('correct');
                 
                 feedbackEl.textContent = "¡Resposta Incorrecta!";
                 feedbackEl.style.color = "#c0392b";
-                players[currentPlayer].score -= qData.points;
+                
+                players[answeringPlayer].score -= points;
+            }
+
+            // Mensajes adicionales según comodín
+            if (activeJoker && activeJoker.type === 'double') {
+                feedbackEl.textContent += ` (¡X2 Aplicado!)`;
+            } else if (activeJoker && activeJoker.type === 'pass') {
+                feedbackEl.textContent += ` (${players[answeringPlayer].name} asume el destino)`;
             }
 
             feedbackEl.style.display = 'block';
             qData.answered = true;
+            activeJoker = null; // Reiniciar comodín después de usarse
 
             setTimeout(() => {
                 document.getElementById('question-modal').style.display = 'none';
@@ -565,30 +672,23 @@
             }, 5000); 
         }
 
-        // --- Lógica del Administrador ---
+        // --- ADMIN ---
         function openAdmin() {
             const selector = document.getElementById('edit-selector');
             selector.innerHTML = '';
-            
             gameData.forEach(q => {
                 const opt = document.createElement('option');
                 opt.value = q.id;
                 opt.textContent = `${q.category} - ${q.points} pts`;
                 selector.appendChild(opt);
             });
-
             loadQuestionForEdit();
             document.getElementById('admin-modal').style.display = 'flex';
         }
-
-        function closeAdmin() {
-            document.getElementById('admin-modal').style.display = 'none';
-        }
-
+        function closeAdmin() { document.getElementById('admin-modal').style.display = 'none'; }
         function loadQuestionForEdit() {
             const id = document.getElementById('edit-selector').value;
             const qData = gameData.find(q => q.id === id);
-            
             document.getElementById('edit-category').value = qData.category;
             document.getElementById('edit-image').value = qData.image || '';
             document.getElementById('edit-question').value = qData.question;
@@ -598,11 +698,9 @@
             document.getElementById('edit-opt3').value = qData.options[3];
             document.getElementById('edit-correct').value = qData.correctIndex;
         }
-
         function saveQuestionEdit() {
             const id = document.getElementById('edit-selector').value;
             const qData = gameData.find(q => q.id === id);
-            
             qData.category = document.getElementById('edit-category').value;
             qData.image = document.getElementById('edit-image').value;
             qData.question = document.getElementById('edit-question').value;
@@ -613,12 +711,8 @@
                 document.getElementById('edit-opt3').value
             ];
             qData.correctIndex = document.getElementById('edit-correct').value;
-
             const newCategoryName = qData.category;
-            gameData.forEach(q => {
-                if(q.col === qData.col) q.category = newCategoryName;
-            });
-
+            gameData.forEach(q => { if(q.col === qData.col) q.category = newCategoryName; });
             saveData();
             alert("¡El pergamino ha sido sellado con éxito!");
             openAdmin();
