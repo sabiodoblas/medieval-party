@@ -488,7 +488,6 @@
 <body>
     <div class="game-header">
         <h1> MEDIEVIAL</h1>
-        <div class="subtitle">Buy, Sell &amp; Save Money</div>
     </div>
 
     <div class="score-board">
@@ -528,7 +527,7 @@
                 <div class="choices-container" id="choicesContainer"><button class="choice-btn">A) Sell</button><button class="choice-btn selected correct">B) Buy</button><button class="choice-btn">C) Give</button><button class="choice-btn">D) Take</button></div>
             </div>
 
-            <div class="result-message correct" id="resultMessage" style="display: block;">✓ CORRECT! Great shopping skills! 🛒</div>
+            <div class="result-message correct" id="resultMessage" style="display: block;">✓ CORRECTE</div>
 
             <div class="button-group">
                 <button class="action-btn" id="checkBtn" onclick="checkAnswer()" style="display: block;">Check Answer</button>
@@ -546,15 +545,15 @@
 
     <script>
         const categories = [
-            "Vocabulary",
-            "Speaking",
-            "Comprehension",
-            "Surprise!",
+            "Preu just",
+            "El futur",
+            "La foto",
+            "Geoguesser",
             "Sorpresa"
         ];
 
         const questions = {
-            "Vocabulary": {
+            "Preu just": {
                 100: {
                     q: "What word means 'to get something by paying money'?",
                     choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
@@ -586,7 +585,7 @@
                     correct: 0
                 }
             },
-            "Speaking": {
+            "El futur": {
                 100: {
                     type: "speaking",
                     q: "SPEAKING CHALLENGE (30 seconds)\n\nDescribe your favorite store.\n\nUse: I like..., They sell..., The prices are...",
@@ -623,7 +622,7 @@
                     hint: "Use: I think... is better because... / Both have advantages, but..."
                 }
             },
-            "Comprehension": {
+            "La foto": {
                 100: {
                     type: "comprehension",
                     passage: "Shopping can be fun and easy. Many people like to buy clothes, food, and gifts. Some people prefer to go to big stores, while others like to shop online. It is important to check the price before buying.",
@@ -675,7 +674,7 @@
                     correct: 1
                 }
             },
-            "Surprise!": {
+            "Geoguesser": {
                 100: {
                     type: "surprise",
                     q: "UNSCRAMBLE THE WORD\n\nThese letters spell something you use to pay:\n\nT E L L A W",
