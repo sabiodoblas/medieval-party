@@ -506,8 +506,8 @@
     </div>
 
     <div class="controls">
-        <button class="control-btn" onclick="resetGame()">🔄 New Game</button>
-        <button class="control-btn" onclick="resetScores()">📊 Reset Scores</button>
+        <button class="control-btn" onclick="resetGame()">🔄 Joc nouy</button>
+        <button class="control-btn" onclick="resetScores()">📊 Resetejar Puntuació</button>
     </div>
 
     <div class="board" id="gameBoard"><div class="category">Preu just</div><div class="category">El futur</div><div class="category">La foto</div><div class="category">Geoguesser</div><div class="category">Sorpresa</div><div class="cell used" data-category="Vocabulary" data-value="100">$100</div><div class="cell" data-category="Speaking" data-value="100">$100</div><div class="cell" data-category="Comprehension" data-value="100">$100</div><div class="cell" data-category="Surprise!" data-value="100">$100</div><div class="cell" data-category="Sorpresa" data-value="100">$100</div><div class="cell" data-category="Vocabulary" data-value="200">$200</div><div class="cell" data-category="Speaking" data-value="200">$200</div><div class="cell" data-category="Comprehension" data-value="200">$200</div><div class="cell" data-category="Surprise!" data-value="200">$200</div><div class="cell" data-category="Sorpresa" data-value="200">$200</div><div class="cell" data-category="Vocabulary" data-value="300">$300</div><div class="cell" data-category="Speaking" data-value="300">$300</div><div class="cell" data-category="Comprehension" data-value="300">$300</div><div class="cell" data-category="Surprise!" data-value="300">$300</div><div class="cell" data-category="Sorpresa" data-value="300">$300</div><div class="cell" data-category="Vocabulary" data-value="400">$400</div><div class="cell" data-category="Speaking" data-value="400">$400</div><div class="cell" data-category="Comprehension" data-value="400">$400</div><div class="cell" data-category="Surprise!" data-value="400">$400</div><div class="cell" data-category="Sorpresa" data-value="400">$400</div><div class="cell" data-category="Vocabulary" data-value="500">$500</div><div class="cell" data-category="Speaking" data-value="500">$500</div><div class="cell" data-category="Comprehension" data-value="500">$500</div><div class="cell" data-category="Surprise!" data-value="500">$500</div><div class="cell" data-category="Sorpresa" data-value="500">$500</div></div>
@@ -530,8 +530,8 @@
             <div class="result-message correct" id="resultMessage" style="display: block;">✓ CORRECTE</div>
 
             <div class="button-group">
-                <button class="action-btn" id="checkBtn" onclick="checkAnswer()" style="display: block;">Check Answer</button>
-                <button class="action-btn" id="nextBtn" onclick="closeModal()" style="display: block;">Next Question</button>
+                <button class="action-btn" id="checkBtn" onclick="checkAnswer()" style="display: block;">Comprovar</button>
+                <button class="action-btn" id="nextBtn" onclick="closeModal()" style="display: block;">Següent/button>
             </div>
 
             <div class="team-selector" id="teamSelector" style="display: none;">
@@ -555,9 +555,9 @@
         const questions = {
             "Preu just": {
                 100: {
-                    q: "What word means 'to get something by paying money'?",
-                    choices: ["A) Sell", "B) Buy", "C) Give", "D) Take"],
-                    correct: 1
+                    q: "Que podia costar una espasa a la epoca medieval?",
+                    choices: ["A) 1 gallina", "B) 10 gallines", "C) 1 burro", "D) Les trobaves pel bosc"],
+                    correct: 2
                 },
                 200: {
                     q: "If something is 'expensive', what does that mean?",
@@ -1010,7 +1010,7 @@
         }
 
         function resetGame() {
-            if (confirm('Start a new game? This will reset the board and all scores.')) {
+            if (confirm('Jugar de nou?')) {
                 scores = [0, 0, 0];
                 updateScores();
                 initBoard();
@@ -1019,7 +1019,7 @@
         }
 
         function resetScores() {
-            if (confirm('Reset all scores to zero?')) {
+            if (confirm('Resetejar la puntuació?')) {
                 scores = [0, 0, 0];
                 updateScores();
             }
