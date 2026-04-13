@@ -102,9 +102,9 @@
         #game-screen { display: none; }
         .board {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(6, 1fr); /* Actualizado a 6 columnas */
             gap: 15px;
-            max-width: 1100px;
+            max-width: 1300px; /* Ampliado para que quepan 6 columnas */
             margin: 20px auto;
         }
         .category-header {
@@ -113,7 +113,7 @@
             font-weight: 800;
             padding: 15px 5px;
             text-transform: uppercase;
-            font-size: 20px;
+            font-size: 18px;
             border: 2px solid var(--gold);
             border-radius: 3px;
             text-shadow: 2px 2px 4px #000;
@@ -376,10 +376,12 @@
     </div>
 
     <script>
-        const defaultCategories = ["Història", "Alquímia", "Geografia", "Cavallers", "Llegendes"];
-        const pointValues = [100, 200, 300, 400, 500];
+        // Actualizado a 6 categorías
+        const defaultCategories = ["Història", "Alquímia", "Geografia", "Cavallers", "Llegendes", "Relíquies"];
+        // Puntuaciones actualizadas
+        const pointValues = [100, 200, 400, 600, 800];
         
-        // Base de dades predefinida amb les 25 preguntes i respostes
+        // Base de dades predefinida amb les 30 preguntes i respostes
         const presetQuestions = [
             // Columna 0: Història
             { q: "Quin era el sistema polític i social dominant a l'Europa de l'Edat Mitjana?", opts: ["Capitalisme", "Feudalisme", "Comunisme", "Imperialisme"], corr: 1 },
@@ -414,7 +416,14 @@
             { q: "Segons la mitologia nòrdica, quin és el nom del llop gegantí destinat a devorar Odin al Ragnarök?", opts: ["Jörmungandr", "Fenrir", "Cèrber", "Sköll"], corr: 1 },
             { q: "Com es deia la llegendària espasa màgica del Rei Artús, que li va atorgar la Dama del Llac?", opts: ["Tizona", "Durandal", "Excalibur", "Joiosa"], corr: 2 },
             { q: "Quina criatura llegendària amb cos de lleó i cap i ales d'àliga era famosa a l'heràldica medieval?", opts: ["La Mantícora", "La Quimera", "L'Hipogrif", "El Griu (Aixeta)"], corr: 3 },
-            { q: "Quin monstre eslau, que xuclava sang i no podia suportar la llum del sol, va inspirar la llegenda dels vampirs?", opts: ["El Gòlem", "El Wendigo", "L'Strigoi / Upir", "El Banshee"], corr: 2 }
+            { q: "Quin monstre eslau, que xuclava sang i no podia suportar la llum del sol, va inspirar la llegenda dels vampirs?", opts: ["El Gòlem", "El Wendigo", "L'Strigoi / Upir", "El Banshee"], corr: 2 },
+
+            // Columna 5: Relíquies (Nova)
+            { q: "Quina copa mítica atorgava la vida eterna o l'abundància infinita a les llegendes artúriques?", opts: ["La Copa d'Or", "El Sant Greal", "El Calze Fosc", "La Copa de la Vida"], corr: 1 },
+            { q: "A 'El Senyor dels Anells', quines pedres esfèriques s'utilitzaven per veure visions i comunicar-se?", opts: ["Pedres Fèeriques", "Ull de Drac", "Palantíri", "Pedres de Llum"], corr: 2 },
+            { q: "A la mitologia grega, quin objecte contenia tots els mals del món?", opts: ["El Vas de Prometeu", "L'Àmfora d'Atena", "La Capsa de Pandora", "El Cofre d'Hades"], corr: 2 },
+            { q: "Segons la llegenda, quina relíquia va travessar el costat de Jesucrist a la creu?", opts: ["L'Espasa de Sant Pere", "La Llança de Longí", "El Clau del Destí", "La Daga Sagrada"], corr: 1 },
+            { q: "A l'univers de Harry Potter, quina d'aquestes NO és una de les Relíquies de la Mort?", opts: ["La Vareta d'Àlber", "La Pedra de la Resurrecció", "La Capa d'Invisibilitat", "L'Espasa de Gryffindor"], corr: 3 }
         ];
 
         let gameData = [];
@@ -438,14 +447,22 @@
 
         function initData() {
             const savedData = localStorage.getItem('jeopardyData');
-            if (savedData) gameData = JSON.parse(savedData);
-            else generateDefaultData();
+            if (savedData) {
+                gameData = JSON.parse(savedData);
+                // Si el jugador tenia l'arxiu antic desat (25 preguntes) en lloc de 30, el reiniciem
+                if (gameData.length !== 30) {
+                    generateDefaultData();
+                }
+            } else {
+                generateDefaultData();
+            }
         }
 
         function generateDefaultData() {
             gameData = [];
             let qIndex = 0;
-            for (let col = 0; col < 5; col++) {
+            // Modificat a 6 columnes
+            for (let col = 0; col < 6; col++) {
                 for (let row = 0; row < 5; row++) {
                     const data = presetQuestions[qIndex];
                     gameData.push({
@@ -489,11 +506,12 @@
             reader.onload = function(e) {
                 try {
                     const importedData = JSON.parse(e.target.result);
-                    if (Array.isArray(importedData) && importedData.length === 25) {
+                    // Actualitzat a 30 preguntes
+                    if (Array.isArray(importedData) && importedData.length === 30) {
                         gameData = importedData;
                         saveData(); 
                         alert("Pergamins restaurats! Les preguntes s'han actualitzat.");
-                    } else alert("Error: El pergamí no té la màgia correcta.");
+                    } else alert("Error: El pergamí no té la màgia correcta (Necessites 30 preguntes).");
                 } catch (error) { alert("Error en desxifrar el pergamí."); }
                 document.getElementById('import-file').value = ""; 
             };
@@ -528,7 +546,8 @@
         function renderBoard() {
             const board = document.getElementById('board');
             board.innerHTML = '';
-            for (let col = 0; col < 5; col++) {
+            // Modificat a 6 columnes
+            for (let col = 0; col < 6; col++) {
                 const headerObj = gameData.find(q => q.col === col && q.row === 0);
                 const div = document.createElement('div');
                 div.className = 'category-header';
@@ -536,7 +555,8 @@
                 board.appendChild(div);
             }
             for (let row = 0; row < 5; row++) {
-                for (let col = 0; col < 5; col++) {
+                // Modificat a 6 columnes
+                for (let col = 0; col < 6; col++) {
                     const qData = gameData.find(q => q.col === col && q.row === row);
                     const div = document.createElement('div');
                     div.className = 'card' + (qData.answered ? ' disabled' : '');
